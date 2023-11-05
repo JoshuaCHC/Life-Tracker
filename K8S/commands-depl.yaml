@@ -1,0 +1,31 @@
+apiVersion: apps/v1 #what version of the api it is
+kind: Deployment
+metadata:
+  name: commands-depl
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: commandservice #select what we deploy
+  template:
+    metadata:
+      labels:
+        app: commandservice #define what we deploy
+    spec:
+      containers: 
+      - name: commandservice
+        image: jcheng710/commandservice:latest
+---
+apiVersion: v1 #service providing cluster IP to the services (how they talk to each other)
+kind: Service
+metadata:
+  name: commands-clusterip-service #effectively the endpoint to reach out to
+spec:
+  type: ClusterIP
+  selector:
+    app: commandservice
+  ports:
+  - name: commandservice
+    protocol: TCP
+    port: 80
+    targetPort: 80
