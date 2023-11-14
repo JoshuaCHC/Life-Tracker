@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WPxaWrTFTlftU2nhJlL9r44MCxzK2WfqHJ/0xuyFlxwMHKJJbobdtNDijFCAMHsSELKes8KboscYQ8GYgQ5Clw==",
+  "dgSpecHash": "tsttqiW924Zz5SmRnyK56qUA/03YIjfGmShd37akPTvet5ZaAJTU6NZ1h+gK/WoO7QKaLZE5RM+eB3m/xplteg==",
   "success": true,
-  "projectFilePath": "E:\\dev\\microservices\\CommandService\\CommandService.csproj",
+  "projectFilePath": "E:\\dev\\microservices\\shiny-barnacle\\CommandService\\CommandService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Josh\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Josh\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

@@ -3403,11 +3403,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\dev\\microservices\\PlatformService\\PlatformService.csproj",
+      "projectUniqueName": "E:\\dev\\microservices\\shiny-barnacle\\PlatformService\\PlatformService.csproj",
       "projectName": "PlatformService",
-      "projectPath": "E:\\dev\\microservices\\PlatformService\\PlatformService.csproj",
+      "projectPath": "E:\\dev\\microservices\\shiny-barnacle\\PlatformService\\PlatformService.csproj",
       "packagesPath": "C:\\Users\\Josh\\.nuget\\packages\\",
-      "outputPath": "E:\\dev\\microservices\\PlatformService\\obj\\",
+      "outputPath": "E:\\dev\\microservices\\shiny-barnacle\\PlatformService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

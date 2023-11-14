@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Zo36mmDlWskf552PECgmdn65lHm3mRWjGXAuDc/KVsQbzh9dUlfLkqxfmGr27C7RXRFu9iCNlQI4+mT16EfJew==",
+  "dgSpecHash": "wcP7EUn4I3hHFqnYxOkAiLuUPoh/59CKQ50m8FaWR69JCqHaKma9cxgPFEV4usXnjNsD3wySF/QZk47Qqg9ykw==",
   "success": true,
-  "projectFilePath": "E:\\dev\\microservices\\PlatformService\\PlatformService.csproj",
+  "projectFilePath": "E:\\dev\\microservices\\shiny-barnacle\\PlatformService\\PlatformService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Josh\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Josh\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

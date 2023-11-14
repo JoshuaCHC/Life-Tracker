@@ -3226,11 +3226,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\dev\\microservices\\CommandService\\CommandService.csproj",
+      "projectUniqueName": "E:\\dev\\microservices\\shiny-barnacle\\CommandService\\CommandService.csproj",
       "projectName": "CommandService",
-      "projectPath": "E:\\dev\\microservices\\CommandService\\CommandService.csproj",
+      "projectPath": "E:\\dev\\microservices\\shiny-barnacle\\CommandService\\CommandService.csproj",
       "packagesPath": "C:\\Users\\Josh\\.nuget\\packages\\",
-      "outputPath": "E:\\dev\\microservices\\CommandService\\obj\\",
+      "outputPath": "E:\\dev\\microservices\\shiny-barnacle\\CommandService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
