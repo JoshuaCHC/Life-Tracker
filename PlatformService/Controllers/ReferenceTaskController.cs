@@ -13,34 +13,36 @@ namespace PlatformService.Controllers
     public class ReferenceTaskController : ControllerBase
     {
         private readonly IReferenceTaskRepo _referenceTaskRepo;
+        private readonly IScheduledTaskRepo _scheduledTaskRepo;
         private readonly IMapper _mapper;
 
 
-        public ReferenceTaskController(IReferenceTaskRepo repo, IMapper mapper)
+        public ReferenceTaskController(IReferenceTaskRepo repo, IScheduledTaskRepo scheduledTaskRepo, IMapper mapper)
         {
             _referenceTaskRepo = repo;
+            _scheduledTaskRepo = scheduledTaskRepo;
             _mapper = mapper;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<ReferenceTaskReadDto>> GetReferenceTasks()
         {
-            var platforms = _referenceTaskRepo.GetAllReferenceTasks();
+            var referenceTasks = _referenceTaskRepo.GetAllReferenceTasks();
             
-            return Ok(_mapper.Map<IEnumerable<ReferenceTaskReadDto>>(platforms)); 
+            return Ok(_mapper.Map<IEnumerable<ReferenceTaskReadDto>>(referenceTasks)); 
         }
 
         [HttpGet("{id}", Name= "GetReferenceTaskById")]
         public ActionResult<ReferenceTaskReadDto> GetReferenceTaskById(int id)
         {
-            var platform = _referenceTaskRepo.GetReferenceTaskById(id);
+            var referenceTask = _referenceTaskRepo.GetReferenceTaskById(id);
 
-            if(platform == null)
+            if(referenceTask == null)
             {
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<ReferenceTaskReadDto>(platform));
+            return Ok(_mapper.Map<ReferenceTaskReadDto>(referenceTask));
         }
 
         [HttpPost]
@@ -50,6 +52,15 @@ namespace PlatformService.Controllers
             _referenceTaskRepo.CreateReferenceTask(referenceTask);
 
             var referenceTaskReadDto = _mapper.Map<ReferenceTaskReadDto>(referenceTask);
+
+            var reschedulingTask = new ScheduledTaskCreateDto()
+            {
+                ReferenceTaskId = referenceTask.Id,
+                Name = referenceTask.Name,
+                DueDate = dto.StartDate
+            };
+            var rescheduledTask = _mapper.Map<ScheduledTask>(reschedulingTask);
+            _scheduledTaskRepo.CreateScheduledTask(rescheduledTask);
 
             return CreatedAtRoute(nameof(GetReferenceTaskById), new { Id = referenceTaskReadDto.Id }, referenceTaskReadDto);
         }
