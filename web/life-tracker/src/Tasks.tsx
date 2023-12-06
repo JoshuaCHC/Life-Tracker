@@ -1,12 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from "react-query";
-import { client } from "./client";
 import {
   Grid,
   Paper,
-  NumberInput,
   Button,
   Card,
-  Badge,
   Group,
   Text,
   Stack,
@@ -14,38 +10,20 @@ import {
   Select,
 } from "@mantine/core";
 import { useState } from "react";
-import { DateInput, DatePickerInput } from "@mantine/dates";
-import { OriginTask } from "./originTask";
+import { DateInput } from "@mantine/dates";
+import { ReferenceTask } from "./models/tasks";
+import { useAddReferenceTask, useGetReferenceTasks } from "./hooks/referenceTasksService";
 
 export const Tasks = () => {
-  const queryClient = useQueryClient();
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [taskName, setTaskName] = useState("");
   const [description, setDescription] = useState("");
   const [numDays, setNumDays] = useState("");
 
-  const query = useQuery("tasks", async () => {
-    const data = await client.get<OriginTask[]>("/tasks");
-    return data;
-  });
-
-  const mutation = useMutation(
-    async () => {
-      await client.post(`/task`, {
-        taskName: taskName,
-        taskDescription: description,
-        startDate: startDate,
-        rescheduleInDays: parseInt(numDays),
-        id: 0,
-      });
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("tasks");
-      },
-    }
-  );
-
+  const referenceTasks = useGetReferenceTasks();
+  const addReferenceTask = useAddReferenceTask();
+  
+  //TODO make this into a form using react hook form to make it easier to use
   return (
     <Grid
       gutter={{ base: "16px" }}
@@ -84,6 +62,10 @@ export const Tasks = () => {
               { value: "0", label: "Never" },
               { value: "1", label: "Every day" },
               { value: "2", label: "Every 2 days" },
+              { value: "3", label: "Every 3 days" },
+              { value: "7", label: "Every week" },
+              { value: "14", label: "Every fornight" },
+              { value: "30", label: "Every month" },
             ]}
             value={numDays}
             onChange={(e) => setNumDays(e ?? "0")}
@@ -91,7 +73,10 @@ export const Tasks = () => {
           />
           <Button
             onClick={() => {
-              mutation.mutate();
+              if(!startDate || !numDays){
+                return; 
+              }
+              addReferenceTask.mutate({ name: taskName, description: description, startDate: startDate, recurDays: parseInt(numDays), id: 0});
               setTaskName("");
             }}
           >
@@ -112,7 +97,7 @@ export const Tasks = () => {
           bg="#F8FAFC"
         >
           <Stack gap={"16px"}>
-            {query.data?.data.map((task: OriginTask) => {
+            {referenceTasks.data?.map((task: ReferenceTask) => {
               return (
                 <Card
                   radius="lg"
@@ -125,13 +110,13 @@ export const Tasks = () => {
                     mt="md"
                     mb="xs"
                   >
-                    <Text fw={500}>{task.taskName}</Text>
+                    <Text fw={500}>{task.name}</Text>
                   </Group>
                   <Text
                     size="sm"
                     c="dimmed"
                   >
-                    Description: {task.taskDescription}
+                    Description: {task.description}
                   </Text>
                   <Text
                     size="sm"

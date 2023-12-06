@@ -22,10 +22,8 @@ export const Layout = () => {
 
       <AppShell.Navbar p="md">
         <NavLink label="Home" leftSection={<IconHome2 size="1rem" stroke={1.5} />} active={1===active} onClick={() => {setActive(1); navigate("/")}} variant="subtle"/>
-        <NavLink label="User Information" leftSection={<IconHome2 size="1rem" stroke={1.5} />} active={2===active} onClick={() => {setActive(2); navigate("/user-information")}} variant="subtle"/>
-        <NavLink label="Form" leftSection={<IconHome2 size="1rem" stroke={1.5} />} active={3===active} onClick={() => {setActive(3); navigate("/form")}} variant="subtle"/>
-        <NavLink label="Task" leftSection={<IconHome2 size="1rem" stroke={1.5} />} active={4===active} onClick={() => {setActive(4); navigate("/tasks")}} variant="subtle"/>
-        <NavLink label="Calendar" leftSection={<IconHome2 size="1rem" stroke={1.5} />} active={5===active} onClick={() => {setActive(5); navigate("/calendar")}} variant="subtle"/>
+        <NavLink label="Task" leftSection={<IconHome2 size="1rem" stroke={1.5} />} active={4===active} onClick={() => {setActive(2); navigate("/tasks")}} variant="subtle"/>
+        <NavLink label="Calendar" leftSection={<IconHome2 size="1rem" stroke={1.5} />} active={5===active} onClick={() => {setActive(3); navigate("/calendar")}} variant="subtle"/>
 
       </AppShell.Navbar>
 

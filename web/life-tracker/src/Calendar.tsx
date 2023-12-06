@@ -3,34 +3,21 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
-import { useMemo, useState } from "react";
-import { DateInput, DatePickerInput } from "@mantine/dates";
+import { useState } from "react";
+import { DateInput } from "@mantine/dates";
 import { Card, Checkbox, Grid, Modal, Paper, Stack, Text, TextInput } from "@mantine/core";
 import { EventApi } from "@fullcalendar/core/index.js";
-import { useQuery } from "react-query";
-import { client } from "./client";
-import { OriginTask } from "./originTask";
 import { useDisclosure } from "@mantine/hooks";
+import { ScheduledTask } from "./models/tasks";
+import { useGetScheduledTasksQuery } from "./hooks/scheduledTasksService";
 
 export const Calendar = () => {
   const [events, setEvents] = useState<EventApi[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
-  const query = useQuery("tasks", async () => {
-    const data = await client.get<OriginTask[]>("/tasks");
-    return data.data.map((task: OriginTask) => {
-      return {
-        ...task,
-        startDate: new Date(Date.parse(task.startDate.toString()))
-      }
 
-    })
-  });
-  const [selectedEvent, setSelectedEvent] = useState<OriginTask>();
+  const [selectedEvent, setSelectedEvent] = useState<ScheduledTask>();
 
-
-  if (query.isLoading) {
-    return <></>;
-  }
+  const scheduledTasks = useGetScheduledTasksQuery();
 
   const handleDateClick = (selected: any) => {
     const title = prompt("Please enter a new title for your event"); // replace with modal?
@@ -50,8 +37,8 @@ export const Calendar = () => {
   };
 
   const handleEventClick = (selected: any) => {
-    console.log(query?.data?.find((val) => val.id.toString() === selected.event.id)?.startDate)
-    setSelectedEvent(query?.data?.find((val) => val.id.toString() === selected.event.id))
+    //console.log(query?.data?.find((val) => val.id.toString() === selected.event.id)?.startDate)
+    //setSelectedEvent(query?.data?.find((val) => val.id.toString() === selected.event.id))
     open();
     // if (
     //   window.confirm(
@@ -129,14 +116,14 @@ export const Calendar = () => {
               select={handleDateClick}
               eventClick={handleEventClick}
               eventsSet={(events) => setEvents(events)}
-              initialEvents={query.data?.map((event: OriginTask) => {
-                return {
-                  id: event.id.toString(),
-                  title: event.taskName,
-                  date: event.startDate,
-                  allDay: true,
-                };
-              })}
+              // initialEvents={query.data?.map((event: ScheduledTask) => {
+              //   return {
+              //     id: event.id.toString(),
+              //     title: event.taskName,
+              //     date: event.startDate,
+              //     allDay: true,
+              //   };
+              // })}
             />
           </Paper>
         </Grid.Col>
@@ -146,10 +133,9 @@ export const Calendar = () => {
         onClose={close}
         title="Add event"
       >
-        <TextInput value={selectedEvent?.taskName} label="title"/> 
-        <TextInput value={selectedEvent?.taskDescription} label="title"/> 
-        <DateInput value={selectedEvent?.startDate} label="start"/>
-        <Checkbox checked={selectedEvent?.isComplete ?? false} label="complete"/> 
+        <TextInput value={selectedEvent?.name} label="title"/> 
+        <DateInput value={selectedEvent?.dueDate} label="start"/>
+        <Checkbox checked={selectedEvent?.completedDate ? true : false} label="complete"/> 
 
       </Modal>
     </>
