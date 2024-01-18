@@ -3,52 +3,77 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DateInput } from "@mantine/dates";
-import { Card, Checkbox, Grid, Modal, Paper, Stack, Text, TextInput } from "@mantine/core";
-import { EventApi } from "@fullcalendar/core/index.js";
+import { Button, Card, Checkbox, Flex, Grid, Group, Modal, Paper, Stack, Text, TextInput, ThemeIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { ScheduledTask } from "./models/tasks";
-import { useGetScheduledTasksQuery } from "./hooks/scheduledTasksService";
+import { IconCheck } from "@tabler/icons-react";
+import { useCompleteScheduledTaskMutation, useGetScheduledTasksQuery } from "./hooks/scheduledTasksService";
+import { useGetReferenceTasks } from "./hooks/referenceTasksService";
+import { EventClickArg, EventContentArg } from "@fullcalendar/core/index.js";
 
 export const Calendar = () => {
-  const [events, setEvents] = useState<EventApi[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
 
   const [selectedEvent, setSelectedEvent] = useState<ScheduledTask>();
 
   const scheduledTasks = useGetScheduledTasksQuery();
+  const completeTask = useCompleteScheduledTaskMutation();
 
-  const handleDateClick = (selected: any) => {
-    const title = prompt("Please enter a new title for your event"); // replace with modal?
-    const calendarApi = selected.view.calendar;
-    calendarApi.unselect();
+  const events = useMemo(() => {
+    return scheduledTasks.data?.map(scheduledTask => {
+      const completed = new Date(scheduledTask.completedDate).getTime() > 0
+      console.log(completed, new Date(scheduledTask.completedDate).getTime(),new Date(0).getTime(), scheduledTask.completedDate )
+      return {
+        id: scheduledTask.id.toString(),
+        title: scheduledTask.name,
+        date: new Date(scheduledTask.dueDate),
+        allDay: true,
+        color: completed ? "#404e4d" : "#62bec1",
+      }
+    })
+  }, [scheduledTasks.data])
 
-    if (title) {
-      calendarApi.addEvent({
-        id: `${selected.dateStr}-${title}`,
-        title,
-        start: selected.startStr,
-        end: selected.endStr,
-        allDay: selected.allDay,
-      });
-      //send request to add to db
-    }
-  };
+  //TODO Add events in backend, and add the ability to add them in here
+  // const handleDateClick = (selected: any) => {
+  //   const title = prompt("Please enter a new title for your event"); // replace with modal?
+  //   const calendarApi = selected.view.calendar;
+  //   calendarApi.unselect();
 
-  const handleEventClick = (selected: any) => {
+  //   if (title) {
+  //     calendarApi.addEvent({
+  //       id: `${selected.dateStr}-${title}`,
+  //       title,
+  //       start: selected.startStr,
+  //       end: selected.endStr,
+  //       allDay: selected.allDay,
+  //     });
+  //     //send request to add to db
+  //   }
+  // };
+
+  const handleEventClick = (selected: EventClickArg) => {
     //console.log(query?.data?.find((val) => val.id.toString() === selected.event.id)?.startDate)
-    //setSelectedEvent(query?.data?.find((val) => val.id.toString() === selected.event.id))
+
+    setSelectedEvent(scheduledTasks.data?.find((val) => val.id.toString() === selected.event.id))
     open();
-    // if (
-    //   window.confirm(
-    //     `Are you sure you want to delete the event '${selected.event.title}'`
-    //   )
-    // ) {
-    //   selected.event.remove();
-    //   //delete event
-    // }
   };
+
+  const isEventCompleted = (id: string) => {
+    return new Date(scheduledTasks.data?.find((val) => val.id.toString() === id)?.completedDate!).getTime() > 0
+  }
+
+  function renderEventContent(eventInfo: EventContentArg) {
+    return (
+      <Flex style={{ justifyContent: "space-between", paddingLeft: "4px", paddingRight: "8px"}} align="center">
+        {eventInfo.event.title}
+        {isEventCompleted(eventInfo.event.id) ? <ThemeIcon variant="outline" radius="md" size="xs" color="green"><IconCheck
+              style={{ width: '70%', height: '70%' }}
+            /></ThemeIcon> : <></>}
+      </Flex>
+    )
+  }
 
   return (
     <>
@@ -74,10 +99,10 @@ export const Calendar = () => {
               Events
             </Text>
             <Stack gap={"16px"}>
-              {events.map((event) => (
+              {events?.map((event) => (
                 <Card key={event.id}>
                   <Text>{event.title}</Text>
-                  <Text>{event.start?.toDateString()}</Text>
+                  <Text>{new Date(event.date).toDateString()}</Text>
                 </Card>
               ))}
             </Stack>
@@ -113,17 +138,11 @@ export const Calendar = () => {
               selectable={true}
               selectMirror={true}
               dayMaxEvents={true}
-              select={handleDateClick}
+              eventContent={renderEventContent}
+              //select={handleDateClick}
               eventClick={handleEventClick}
-              eventsSet={(events) => setEvents(events)}
-              // initialEvents={query.data?.map((event: ScheduledTask) => {
-              //   return {
-              //     id: event.id.toString(),
-              //     title: event.taskName,
-              //     date: event.startDate,
-              //     allDay: true,
-              //   };
-              // })}
+              events={events}
+              //eventsSet={(events) => setEvents(events)}
             />
           </Paper>
         </Grid.Col>
@@ -131,13 +150,21 @@ export const Calendar = () => {
       <Modal
         opened={opened}
         onClose={close}
-        title="Add event"
+        title="Complete Event"
       >
-        <TextInput value={selectedEvent?.name} label="title"/> 
-        <DateInput value={selectedEvent?.dueDate} label="start"/>
-        <Checkbox checked={selectedEvent?.completedDate ? true : false} label="complete"/> 
-
+        <TextInput value={selectedEvent?.name} label="Title"/> 
+        <DateInput value={new Date(selectedEvent?.dueDate!)} label="Due Date" disabled/>
+        <Button onClick={() => {
+          completeTask.mutate({
+            id: selectedEvent?.id!,
+            completedDate: new Date(),
+            completedInMinutes: 0, //TODO ADD SOMETHING TO HANDLE THIS
+            referenceTaskId: selectedEvent?.referenceTaskId!
+          })
+          close()
+        }}> Complete Task </Button>
       </Modal>
     </>
   );
 };
+

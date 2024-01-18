@@ -13,3 +13,10 @@ export type ReferenceTask = {
   startDate: Date,
   recurDays: number
 }
+
+export type CompleteScheduledTask = {
+  id: number
+  completedDate: Date,
+  completedInMinutes: number,
+  referenceTaskId: number
+}

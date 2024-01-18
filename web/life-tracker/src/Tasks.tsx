@@ -29,7 +29,7 @@ export const Tasks = () => {
       gutter={{ base: "16px" }}
       h="100%"
     >
-      <Grid.Col span={3}>
+      <Grid.Col span={5}>
         <Paper
           shadow="md"
           radius="lg"
@@ -85,7 +85,7 @@ export const Tasks = () => {
         </Paper>
       </Grid.Col>
       <Grid.Col
-        span={6}
+        span={7}
         w="100%"
         h="100%"
         mb="xl"
@@ -122,7 +122,7 @@ export const Tasks = () => {
                     size="sm"
                     c="dimmed"
                   >
-                    Start date: {task.startDate.toString()}
+                    {`Start date: ${new Date(task.startDate).toLocaleDateString('en-AU', {day: 'numeric', month: 'long'})}`}
                   </Text>
                 </Card>
               );
