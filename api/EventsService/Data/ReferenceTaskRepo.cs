@@ -1,6 +1,6 @@
-﻿using PlatformService.Models;
+﻿using EventsService.Models;
 
-namespace PlatformService.Data
+namespace EventsService.Data
 {
     public class ReferenceTaskRepo : IReferenceTaskRepo
     {
@@ -23,7 +23,7 @@ namespace PlatformService.Data
         public void DeleteReferenceTask(int id)
         {
             var taskToRemove = _appDbContext.ReferenceTasks.FirstOrDefault(x => x.Id == id);
-            if(taskToRemove is null)
+            if (taskToRemove is null)
             {
                 throw new ArgumentNullException(nameof(taskToRemove));
             }
@@ -38,9 +38,9 @@ namespace PlatformService.Data
 
         public ReferenceTask GetReferenceTaskById(int id)
         {
-            return _appDbContext.ReferenceTasks.FirstOrDefault( x=> x.Id == id);
+            return _appDbContext.ReferenceTasks.FirstOrDefault(x => x.Id == id);
         }
-        
+
         public void UpdateReferenceTask(ReferenceTask referenceTask)
         {
             var taskToUpdate = _appDbContext.ReferenceTasks.FirstOrDefault(x => x.Id == referenceTask.Id);

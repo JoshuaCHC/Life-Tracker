@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using CommandService.Models;
+using FinanceService.Models;
 using Grpc.Net.Client;
 using PlatformService;
 
-namespace CommandService.SyncDataServices.Grpc
+namespace FinanceService.SyncDataServices.Grpc
 {
     public class PlatformDataClient : IPlatformDataClient
     {

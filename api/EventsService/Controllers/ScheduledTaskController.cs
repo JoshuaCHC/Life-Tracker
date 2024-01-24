@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
+using EventsService.Data;
+using EventsService.Dtos;
+using EventsService.Models;
 using Microsoft.AspNetCore.Mvc;
 using PlatformService.AsyncDataServices;
-using PlatformService.Data;
 using PlatformService.Dtos;
-using PlatformService.Models;
 using PlatformService.SyncDataServices.Http;
 
-namespace PlatformService.Controllers
+namespace EventsService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -28,8 +29,8 @@ namespace PlatformService.Controllers
         public ActionResult<IEnumerable<ScheduledTaskReadDto>> GetScheduledTasks()
         {
             var scheduledTasks = _scheduledTaskRepo.GetAll();
-            
-            return Ok(_mapper.Map<IEnumerable<ScheduledTaskReadDto>>(scheduledTasks)); 
+
+            return Ok(_mapper.Map<IEnumerable<ScheduledTaskReadDto>>(scheduledTasks));
         }
 
         [HttpPost]
@@ -37,7 +38,7 @@ namespace PlatformService.Controllers
         {
             var scheduledTask = _mapper.Map<ScheduledTask>(dto);
             _scheduledTaskRepo.CompleteScheduledTask(scheduledTask);
-            
+
             var referenceTask = _referenceTaskRepo.GetReferenceTaskById(dto.ReferenceTaskId);
 
             var reschedulingTask = new ScheduledTaskCreateDto()

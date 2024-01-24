@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using PlatformService.Models;
+﻿using EventsService.Models;
+using Microsoft.Extensions.Caching.Memory;
 
-namespace PlatformService.Data
+namespace EventsService.Data
 {
     public class CachedReferenceTaskRepo : IReferenceTaskRepo
     {

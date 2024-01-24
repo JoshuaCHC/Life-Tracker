@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CommandService.Models
+namespace FinanceService.Models
 {
     public class Command
     {

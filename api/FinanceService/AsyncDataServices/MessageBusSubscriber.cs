@@ -1,9 +1,9 @@
-﻿using CommandService.EventProcessing;
+﻿using FinanceService.EventProcessing;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 
-namespace CommandService.AsyncDataServices
+namespace FinanceService.AsyncDataServices
 {
     //Building a background service to constantly listen on the queue, as opposed to the other one which creates, fires a message and is released
     public class MessageBusSubscriber : BackgroundService

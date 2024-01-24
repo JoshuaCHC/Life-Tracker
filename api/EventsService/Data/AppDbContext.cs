@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PlatformService.Models;
+﻿using EventsService.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace PlatformService.Data
+namespace EventsService.Data
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> opt): base(opt)
+        public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt)
         {
 
         }

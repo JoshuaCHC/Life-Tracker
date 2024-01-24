@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PlatformService.Models;
 
-namespace PlatformService.Data
+namespace EventsService.Data
 {
     public static class PrepDb
     {
@@ -33,7 +33,7 @@ namespace PlatformService.Data
                 return;
             }
 
-            context.Platforms.AddRange(         
+            context.Platforms.AddRange(
                 new Platform()
                 {
                     Name = "DotNet",

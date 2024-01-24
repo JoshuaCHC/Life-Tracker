@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using CommandService.Data;
-using CommandService.Dtos;
-using CommandService.Models;
+using FinanceService.Data;
+using FinanceService.Dtos;
+using FinanceService.Models;
 using System.Text.Json;
 
-namespace CommandService.EventProcessing
+namespace FinanceService.EventProcessing
 {
     public class EventProcessor : IEventProcessor
     {
@@ -30,7 +30,7 @@ namespace CommandService.EventProcessing
                 default:
                     break;
             }
-        }   
+        }
 
         private void AddPlatform(string platformPublishedMessage)
         {

@@ -1,6 +1,6 @@
-﻿using CommandService.Models;
+﻿using FinanceService.Models;
 
-namespace CommandService.SyncDataServices.Grpc
+namespace FinanceService.SyncDataServices.Grpc
 {
     public interface IPlatformDataClient
     {

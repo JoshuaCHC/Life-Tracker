@@ -1,7 +1,7 @@
-﻿using CommandService.Models;
-using CommandService.SyncDataServices.Grpc;
+﻿using FinanceService.Models;
+using FinanceService.SyncDataServices.Grpc;
 
-namespace CommandService.Data
+namespace FinanceService.Data
 {
     public static class PrepDb
     {
@@ -25,7 +25,7 @@ namespace CommandService.Data
             {
                 if (!repo.ExternalPlatformExists(platform.ExternalID))
                 {
-                    repo.CreatePlatform(platform);           
+                    repo.CreatePlatform(platform);
                 }
                 repo.SaveChanges();
             }

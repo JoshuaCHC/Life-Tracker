@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
+using EventsService.Data;
+using EventsService.Dtos;
+using EventsService.Models;
 using Microsoft.AspNetCore.Mvc;
 using PlatformService.AsyncDataServices;
-using PlatformService.Data;
 using PlatformService.Dtos;
-using PlatformService.Models;
 using PlatformService.SyncDataServices.Http;
 
-namespace PlatformService.Controllers
+namespace EventsService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -28,16 +29,16 @@ namespace PlatformService.Controllers
         public ActionResult<IEnumerable<ReferenceTaskReadDto>> GetReferenceTasks()
         {
             var referenceTasks = _referenceTaskRepo.GetAllReferenceTasks();
-            
-            return Ok(_mapper.Map<IEnumerable<ReferenceTaskReadDto>>(referenceTasks)); 
+
+            return Ok(_mapper.Map<IEnumerable<ReferenceTaskReadDto>>(referenceTasks));
         }
 
-        [HttpGet("{id}", Name= "GetReferenceTaskById")]
+        [HttpGet("{id}", Name = "GetReferenceTaskById")]
         public ActionResult<ReferenceTaskReadDto> GetReferenceTaskById(int id)
         {
             var referenceTask = _referenceTaskRepo.GetReferenceTaskById(id);
 
-            if(referenceTask == null)
+            if (referenceTask == null)
             {
                 return NotFound();
             }
@@ -62,7 +63,7 @@ namespace PlatformService.Controllers
             var rescheduledTask = _mapper.Map<ScheduledTask>(reschedulingTask);
             _scheduledTaskRepo.CreateScheduledTask(rescheduledTask);
 
-            return CreatedAtRoute(nameof(GetReferenceTaskById), new { Id = referenceTaskReadDto.Id }, referenceTaskReadDto);
+            return CreatedAtRoute(nameof(GetReferenceTaskById), new { referenceTaskReadDto.Id }, referenceTaskReadDto);
         }
     }
 }

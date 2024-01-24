@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using PlatformService.Dtos;
-using PlatformService.Models;
+using EventsService.Dtos;
+using EventsService.Models;
 
-namespace PlatformService.Profiles
+namespace EventsService.Profiles
 {
     public class ReferenceTaskProfile : Profile
     {

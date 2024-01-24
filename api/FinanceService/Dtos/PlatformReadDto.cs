@@ -1,4 +1,4 @@
-﻿namespace CommandService.Dtos
+﻿namespace FinanceService.Dtos
 {
     public class PlatformReadDto
     {

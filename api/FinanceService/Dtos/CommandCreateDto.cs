@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CommandService.Dtos
+namespace FinanceService.Dtos
 {
     public class CommandCreateDto
     {

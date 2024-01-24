@@ -1,8 +1,8 @@
-﻿using PlatformService.Dtos;
+﻿using EventsService.Dtos;
 using System.Text;
 using System.Text.Json;
 
-namespace PlatformService.SyncDataServices.Http
+namespace EventsService.SyncDataServices.Http
 {
     public class HttpCommandDataClient : ICommandDataClient
     {

@@ -1,8 +1,8 @@
+using EventsService.AsyncDataServices;
+using EventsService.Data;
+using EventsService.SyncDataServices.Grpc;
+using EventsService.SyncDataServices.Http;
 using Microsoft.EntityFrameworkCore;
-using PlatformService.AsyncDataServices;
-using PlatformService.Data;
-using PlatformService.SyncDataServices.Grpc;
-using PlatformService.SyncDataServices.Http;
 //TODO Cleanup
 var builder = WebApplication.CreateBuilder(args);
 

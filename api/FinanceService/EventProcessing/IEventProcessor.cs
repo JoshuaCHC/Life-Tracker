@@ -1,4 +1,4 @@
-﻿namespace CommandService.EventProcessing
+﻿namespace FinanceService.EventProcessing
 {
     public interface IEventProcessor
     {

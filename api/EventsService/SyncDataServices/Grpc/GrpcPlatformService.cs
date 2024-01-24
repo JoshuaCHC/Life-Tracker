@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using EventsService.Data;
 using Grpc.Core;
-using PlatformService.Data;
+using PlatformService;
 using static PlatformService.GrpcPlatform;
 
-namespace PlatformService.SyncDataServices.Grpc
+namespace EventsService.SyncDataServices.Grpc
 {
     public class GrpcPlatformService : GrpcPlatformBase
     {
@@ -20,8 +21,8 @@ namespace PlatformService.SyncDataServices.Grpc
         {
             var response = new PlatformResponse();
             var platforms = _repsitory.GetAllPlatforms();
-            
-            foreach(var platform in platforms)
+
+            foreach (var platform in platforms)
             {
                 response.Platform.Add(_mapper.Map<GrpcPlatformModel>(platform));
             }

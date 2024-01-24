@@ -1,6 +1,6 @@
-﻿using CommandService.Models;
+﻿using FinanceService.Models;
 
-namespace CommandService.Data
+namespace FinanceService.Data
 {
     public interface ICommandRepo
     {

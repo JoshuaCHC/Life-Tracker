@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using CommandService.Data;
-using CommandService.Dtos;
+using FinanceService.Data;
+using FinanceService.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CommandService.Controllers
+namespace FinanceService.Controllers
 {
     [Route("api/c/[controller]")] //c in the route is signifying it is for the command service (for the routing)
     [ApiController]

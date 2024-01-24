@@ -1,6 +1,6 @@
-﻿using PlatformService.Models;
+﻿using EventsService.Models;
 
-namespace PlatformService.Data
+namespace EventsService.Data
 {
     public interface IPlatformRepo
     {

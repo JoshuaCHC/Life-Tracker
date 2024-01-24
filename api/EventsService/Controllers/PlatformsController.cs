@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
+using EventsService.AsyncDataServices;
+using EventsService.Data;
+using EventsService.Dtos;
+using EventsService.Models;
+using EventsService.SyncDataServices.Http;
 using Microsoft.AspNetCore.Mvc;
-using PlatformService.AsyncDataServices;
-using PlatformService.Data;
-using PlatformService.Dtos;
-using PlatformService.Models;
-using PlatformService.SyncDataServices.Http;
 
-namespace PlatformService.Controllers
+namespace EventsService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PlatformsController: ControllerBase
+    public class PlatformsController : ControllerBase
     {
         private readonly IPlatformRepo _platformRepo;
         private readonly IMapper _mapper;
@@ -29,16 +29,16 @@ namespace PlatformService.Controllers
         public ActionResult<IEnumerable<PlatformReadDto>> GetPlatforms()
         {
             var platforms = _platformRepo.GetAllPlatforms();
-            
-            return Ok(_mapper.Map<IEnumerable<PlatformReadDto>>(platforms)); 
+
+            return Ok(_mapper.Map<IEnumerable<PlatformReadDto>>(platforms));
         }
 
-        [HttpGet("{id}", Name= "GetPlatformById")]
+        [HttpGet("{id}", Name = "GetPlatformById")]
         public ActionResult<PlatformReadDto> GetPlatformById(int id)
         {
             var platform = _platformRepo.GetPlatformById(id);
 
-            if(platform == null)
+            if (platform == null)
             {
                 return NotFound();
             }
@@ -74,7 +74,7 @@ namespace PlatformService.Controllers
                 Console.WriteLine("--> Could not send asynchronous update", ex.Message);
             }
 
-            return CreatedAtRoute(nameof(GetPlatformById), new { Id = platformReadDto.Id }, platformReadDto);
+            return CreatedAtRoute(nameof(GetPlatformById), new { platformReadDto.Id }, platformReadDto);
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using PlatformService.Models;
+﻿using EventsService.Models;
 
-namespace PlatformService.Data
+namespace EventsService.Data
 {
     public class PlatformRepo : IPlatformRepo
     {
@@ -11,7 +11,7 @@ namespace PlatformService.Data
         }
         public void CreatePlatform(Platform platform)
         {
-            if(platform == null)
+            if (platform == null)
             {
                 throw new ArgumentNullException(nameof(platform));
             }

@@ -1,4 +1,4 @@
-﻿namespace PlatformService.Dtos
+﻿namespace EventsService.Dtos
 {
     public class ScheduledTaskCompleteDto
     {

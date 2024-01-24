@@ -1,9 +1,9 @@
-﻿using PlatformService.Dtos;
+﻿using EventsService.Dtos;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
 
-namespace PlatformService.AsyncDataServices
+namespace EventsService.AsyncDataServices
 {
     public class MessageBusClient : IMessageBusClient
     {
@@ -14,7 +14,7 @@ namespace PlatformService.AsyncDataServices
         public MessageBusClient(IConfiguration configuration)
         {
             _configuration = configuration;
-            var factory = new ConnectionFactory() {  HostName = _configuration["RabbitMQHost"], Port = int.Parse(_configuration["RabbitMQPort"]) };
+            var factory = new ConnectionFactory() { HostName = _configuration["RabbitMQHost"], Port = int.Parse(_configuration["RabbitMQPort"]) };
             try
             {
                 _connection = factory.CreateConnection();
@@ -25,7 +25,7 @@ namespace PlatformService.AsyncDataServices
 
                 Console.WriteLine("--> RabbitMQ Connection Created");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"--> Creating RabbitMQ Connection failed with message: {ex.Message}");
             }

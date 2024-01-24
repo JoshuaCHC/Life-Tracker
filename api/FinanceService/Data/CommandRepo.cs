@@ -1,6 +1,6 @@
-﻿using CommandService.Models;
+﻿using FinanceService.Models;
 
-namespace CommandService.Data
+namespace FinanceService.Data
 {
     public class CommandRepo : ICommandRepo
     {
@@ -23,7 +23,7 @@ namespace CommandService.Data
 
         public void CreatePlatform(Platform platform)
         {
-            if(platform == null)
+            if (platform == null)
             {
                 throw new ArgumentNullException(nameof(platform));
             }

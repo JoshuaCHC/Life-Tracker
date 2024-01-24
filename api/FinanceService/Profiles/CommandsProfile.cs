@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using CommandService.Dtos;
-using CommandService.Models;
+using FinanceService.Dtos;
+using FinanceService.Models;
 using PlatformService;
 
-namespace CommandService.Profiles
+namespace FinanceService.Profiles
 {
     public class CommandsProfile : Profile
     {

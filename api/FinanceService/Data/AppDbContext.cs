@@ -1,11 +1,11 @@
-﻿using CommandService.Models;
+﻿using FinanceService.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CommandService.Data
+namespace FinanceService.Data
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> opt): base(opt)
+        public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt)
         {
 
         }

@@ -1,6 +1,6 @@
-﻿using PlatformService.Dtos;
+﻿using EventsService.Dtos;
 
-namespace PlatformService.AsyncDataServices
+namespace EventsService.AsyncDataServices
 {
     public interface IMessageBusClient
     {

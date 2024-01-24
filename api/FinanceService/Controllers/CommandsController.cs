@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using CommandService.Data;
-using CommandService.Dtos;
-using CommandService.Models;
+using FinanceService.Data;
+using FinanceService.Dtos;
+using FinanceService.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CommandService.Controllers
+namespace FinanceService.Controllers
 {
     [Route("api/c/platforms/{platformId}/[controller]")]
     [ApiController]
@@ -40,7 +40,7 @@ namespace CommandService.Controllers
 
             var command = _repo.GetCommand(platformId, commandId);
 
-            if(command == null)
+            if (command == null)
             {
                 return NotFound();
             }
@@ -63,7 +63,7 @@ namespace CommandService.Controllers
             _repo.SaveChanges();
 
             var commandReadDto = _mapper.Map<CommandReadDto>(command);
-            return CreatedAtRoute(nameof(GetCommandForPlatform), new { platformId = platformId, commandId = commandReadDto.Id}, commandReadDto);
+            return CreatedAtRoute(nameof(GetCommandForPlatform), new { platformId, commandId = commandReadDto.Id }, commandReadDto);
         }
     }
 }
