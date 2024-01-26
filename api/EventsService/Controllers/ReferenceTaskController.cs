@@ -3,9 +3,6 @@ using EventsService.Data;
 using EventsService.Dtos;
 using EventsService.Models;
 using Microsoft.AspNetCore.Mvc;
-using PlatformService.AsyncDataServices;
-using PlatformService.Dtos;
-using PlatformService.SyncDataServices.Http;
 
 namespace EventsService.Controllers
 {

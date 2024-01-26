@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PlatformService.Models;
+﻿using EventsService.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventsService.Data
 {

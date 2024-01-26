@@ -15,5 +15,7 @@ namespace EventsService.Data
         public DbSet<ReferenceTask> ReferenceTasks { get; set; }
 
         public DbSet<ScheduledTask> ScheduledTasks { get; set; }
+
+        public DbSet<Event> Events { get; set; }
     }
 }

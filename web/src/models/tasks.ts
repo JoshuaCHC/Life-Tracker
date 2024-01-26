@@ -3,7 +3,8 @@ export type ScheduledTask = {
   completedDate: Date,
   dueDate: Date,
   id: number,
-  referenceTaskId: number
+  referenceTaskId: number,
+  completedInMinutes: number
 }
 
 export type ReferenceTask = {
