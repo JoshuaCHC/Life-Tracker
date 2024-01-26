@@ -4,18 +4,20 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import { useMemo, useState } from "react";
-import { DateInput } from "@mantine/dates";
-import { Button, Flex, Grid, Modal, Paper, TextInput } from "@mantine/core";
+import { Flex, Grid, Paper } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { ScheduledTask } from "./models/tasks";
-import { useCompleteScheduledTaskMutation, useGetScheduledTasksQuery } from "./hooks/scheduledTasksService";
-import { EventClickArg, EventContentArg } from "@fullcalendar/core/index.js";
-import { CompleteEventModal } from "./CompleteEventModal";
+import { ScheduledTask, EventTask } from "./models/tasks";
+import { useGetScheduledTasksQuery } from "./hooks/scheduledTasksService";
+import { DateSelectArg, EventClickArg, EventContentArg } from "@fullcalendar/core/index.js";
+import { CompleteTaskModal } from "./CompleteTaskModal";
+import { CreateEventModal } from "./CreateEventModal";
 
 export const Calendar = () => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [createEventModalOpen, setCreateEventModalOpen] = useState(false);
 
-  const [selectedEvent, setSelectedEvent] = useState<ScheduledTask>();
+  const [selectedTask, setSelectedTask] = useState<ScheduledTask>();
+  const [newEvent, setNewEvent] = useState<EventTask>();
 
   const scheduledTasks = useGetScheduledTasksQuery();
 
@@ -32,32 +34,20 @@ export const Calendar = () => {
     })
   }, [scheduledTasks.data])
 
-  //TODO Add events in backend, and add the ability to add them in here
-  const handleDateClick = (selected: any) => {
-    const title = prompt("Please enter a new title for your event"); // replace with modal?
-    const calendarApi = selected.view.calendar;
-    calendarApi.unselect();
-
-    if (title) {
-      calendarApi.addEvent({
-        id: `${selected.dateStr}-${title}`,
-        title,
-        start: selected.startStr,
-        end: selected.endStr,
-        allDay: selected.allDay,
-      });
-      //send request to add to db
-    }
+  const handleDateClick = (selected: DateSelectArg) => {
+    setNewEvent({
+      startDate: selected.start,
+      endDate: selected.end,
+      allDay: selected.allDay
+    } as EventTask)
+    
+    setCreateEventModalOpen(true)
   };
 
   const handleEventClick = (selected: EventClickArg) => {
-    setSelectedEvent(scheduledTasks.data?.find((val) => val.id.toString() === selected.event.id))
+    setSelectedTask(scheduledTasks.data?.find((val) => val.id.toString() === selected.event.id))
     open();
   };
-
-  const isEventCompleted = (id: string) => {
-    return new Date(scheduledTasks.data?.find((val) => val.id.toString() === id)?.completedDate!).getTime() > 0
-  }
 
   function renderEventContent(eventInfo: EventContentArg) {
     return (
@@ -106,12 +96,12 @@ export const Calendar = () => {
               select={handleDateClick}
               eventClick={handleEventClick}
               events={calendarEvents}
-              //eventsSet={(events) => setEvents(events)}
             />
           </Paper>
         </Grid.Col>
       </Grid>
-      <CompleteEventModal opened={opened} close={close} selectedEvent={selectedEvent} />
+      <CompleteTaskModal opened={opened} close={close} selectedEvent={selectedTask} />
+      <CreateEventModal opened={createEventModalOpen} close={() => setCreateEventModalOpen(false)} newEvent={newEvent} /> 
     </>
   );
 };

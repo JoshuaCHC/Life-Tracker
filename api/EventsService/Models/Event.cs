@@ -12,6 +12,9 @@ namespace EventsService.Models
         public string Title { get; set; }
 
         [Required]
+        public string Location { get; set; }
+
+        [Required]
         public bool AllDay { get; set; }
 
         [Required]

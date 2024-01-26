@@ -3,6 +3,7 @@
     public class EventCreateDto
     {
         public string Title { get; set; }
+        public string Location { get; set; }
 
         public bool AllDay { get; set; }
 

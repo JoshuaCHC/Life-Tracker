@@ -16,8 +16,18 @@ export type ReferenceTask = {
 }
 
 export type CompleteScheduledTask = {
-  id: number
+  id: number,
   completedDate: Date,
   completedInMinutes: number,
   referenceTaskId: number
+}
+
+export type EventTask = { 
+  id: number,
+  title: string,
+  location: string,
+  allDay: boolean,
+  startDate: Date,
+  endDate: Date,
+  expectedCost: number
 }

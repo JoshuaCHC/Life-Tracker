@@ -3,7 +3,10 @@
     public class EventReadDto
     {
         public int Id { get; set; }
+
         public string Title { get; set; }
+
+        public string Location { get; set; }
 
         public bool AllDay { get; set; }
 
