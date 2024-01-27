@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs"
+
 export type ScheduledTask = {
   name: string,
   completedDate: Date,
@@ -27,7 +29,7 @@ export type EventTask = {
   title: string,
   location: string,
   allDay: boolean,
-  startDate: Date,
-  endDate: Date,
+  startDate: Dayjs,
+  endDate: Dayjs,
   expectedCost: number
 }

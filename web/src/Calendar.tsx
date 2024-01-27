@@ -11,6 +11,7 @@ import { useGetScheduledTasksQuery } from "./hooks/scheduledTasksService";
 import { DateSelectArg, EventClickArg, EventContentArg } from "@fullcalendar/core/index.js";
 import { CompleteTaskModal } from "./CompleteTaskModal";
 import { CreateEventModal } from "./CreateEventModal";
+import dayjs from "dayjs";
 
 export const Calendar = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -36,8 +37,8 @@ export const Calendar = () => {
 
   const handleDateClick = (selected: DateSelectArg) => {
     setNewEvent({
-      startDate: selected.start,
-      endDate: selected.end,
+      startDate: dayjs(selected.start),
+      endDate: dayjs(selected.end),
       allDay: selected.allDay
     } as EventTask)
     
