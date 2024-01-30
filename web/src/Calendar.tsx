@@ -10,7 +10,7 @@ import { ScheduledTask, EventTask } from "./models/tasks";
 import { useGetScheduledTasksQuery } from "./hooks/scheduledTasksService";
 import { DateSelectArg, EventClickArg, EventContentArg } from "@fullcalendar/core/index.js";
 import { CompleteTaskModal } from "./CompleteTaskModal";
-import { CreateEventModal } from "./CreateEventModal";
+import { CreateEventModal } from "./components/createEventModal/CreateEventModal";
 import dayjs from "dayjs";
 
 export const Calendar = () => {

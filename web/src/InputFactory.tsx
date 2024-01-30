@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { ControllerRenderProps } from "react-hook-form";
 import { EventTask } from "./models/tasks";
 import { LocalizationProvider, DateTimeField } from "@mui/x-date-pickers";
@@ -8,8 +8,14 @@ type inputFactoryProps = {
   field: ControllerRenderProps<EventTask, keyof EventTask>;
   label: string;
   type: string;
+  disabled?: boolean;
 };
-export const InputFactory = ({ field, label, type }: inputFactoryProps) => {
+export const InputFactory = ({
+  field,
+  label,
+  type,
+  disabled = false,
+}: inputFactoryProps) => {
   switch (type) {
     case "number":
       return (
@@ -36,11 +42,27 @@ export const InputFactory = ({ field, label, type }: inputFactoryProps) => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateTimeField
             {...field}
+            label={label}
             variant="outlined"
             defaultValue={field.value}
+            disabled={disabled}
           />
         </LocalizationProvider>
       );
+
+    case "checkbox":
+      return (
+        <FormControlLabel
+          control={
+            <Checkbox
+              {...field}
+              defaultChecked={!!field.value}
+            />
+          }
+          label={label}
+        />
+      );
+      
     default:
       return null;
   }
