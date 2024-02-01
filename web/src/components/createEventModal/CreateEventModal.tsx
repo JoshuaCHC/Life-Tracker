@@ -8,7 +8,7 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import { InputFactory } from "../../InputFactory";
+import { InputFactory } from "../InputFactory";
 import { dateFields, textFields } from "./CreateEventModalFields";
 import { EventDateFields, EventTaskCreateDto } from "../../models/dtos/taskDtos";
 import dayjs from "dayjs";
