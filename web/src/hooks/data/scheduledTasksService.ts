@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { client } from "../client";
-import { QUERY_KEYS } from "../constants/queryKeys";
+import { client } from "../../client";
+import { QUERY_KEYS } from "../../constants/queryKeys";
 import {
   CompleteScheduledTaskDto,
   ScheduledTaskDto,
-} from "../models/dtos/taskDtos";
+} from "../../models/dtos/taskDtos";
 
 export const useGetScheduledTasksQuery = () => {
   return useQuery({

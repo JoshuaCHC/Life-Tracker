@@ -1,9 +1,9 @@
 import { Modal, TextInput, Button, Stack } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { useCompleteScheduledTaskMutation } from "./hooks/scheduledTasksService";
+import { useCompleteScheduledTaskMutation } from "../../hooks/data/scheduledTasksService";
 import { useState } from "react";
 import dayjs from "dayjs";
-import { ScheduledTaskDto } from "./models/dtos/taskDtos";
+import { ScheduledTaskDto } from "../../models/dtos/taskDtos";
 
 type CompleteTaskModalProps = {
   opened: boolean;

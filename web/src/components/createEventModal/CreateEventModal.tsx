@@ -1,5 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
-import { useAddEventTask } from "../../hooks/eventTasksService";
+import { useAddEventTask } from "../../hooks/data/eventTasksService";
 import {
   Stack,
   Dialog,

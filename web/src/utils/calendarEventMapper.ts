@@ -2,7 +2,7 @@ import { CalendarEvent } from "../models/calendarEvent";
 import { EventTaskDto, ScheduledTaskDto } from "../models/dtos/taskDtos";
 
 export const convertEventToCalendarEvent = (event: EventTaskDto) => {
-  const completed = false;
+  const completed = isDateInPast(event.endDate);
   return {
     id: event.id.toString(),
     title: event.title,
@@ -16,7 +16,7 @@ export const convertEventToCalendarEvent = (event: EventTaskDto) => {
 export const convertScheduledTaskToCalendarEvent = (
   scheduledTask: ScheduledTaskDto
 ) => {
-  const completed = false;
+  const completed = isTaskCompleted(scheduledTask.completedDate);
   return {
     id: scheduledTask.id.toString(),
     title: scheduledTask.name,
@@ -25,3 +25,14 @@ export const convertScheduledTaskToCalendarEvent = (
     color: completed ? "rgba(98, 190, 193, 0.5)" : "#62bec1",
   } as CalendarEvent;
 };
+
+const isDateInPast = (date: string) => {
+  const compareDate = new Date(date)
+  return compareDate < new Date()
+}
+
+const isTaskCompleted = (date: string) => {
+  const compareDate = new Date(date)
+  const defaultDate = Date.parse('0001-01-01T00:00:00.0000000')
+  return compareDate.getTime() !== defaultDate
+}

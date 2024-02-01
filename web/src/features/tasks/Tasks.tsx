@@ -11,8 +11,8 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { DateInput } from "@mantine/dates";
-import { ReferenceTask } from "./models/tasks";
-import { useAddReferenceTask, useGetReferenceTasks } from "./hooks/referenceTasksService";
+import { ReferenceTaskDto } from "../../models/dtos/taskDtos"
+import { useAddReferenceTask, useGetReferenceTasks } from "../../hooks/data/referenceTasksService";
 
 export const Tasks = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -76,7 +76,7 @@ export const Tasks = () => {
               if(!startDate || !numDays){
                 return; 
               }
-              addReferenceTask.mutate({ name: taskName, description: description, startDate: startDate, recurDays: parseInt(numDays), id: 0});
+              addReferenceTask.mutate({ name: taskName, description: description, startDate: startDate.toISOString(), recurDays: parseInt(numDays)});
               setTaskName("");
             }}
           >
@@ -97,7 +97,7 @@ export const Tasks = () => {
           bg="#F8FAFC"
         >
           <Stack gap={"16px"}>
-            {referenceTasks.data?.map((task: ReferenceTask) => {
+            {referenceTasks.data?.map((task: ReferenceTaskDto) => {
               return (
                 <Card
                   radius="lg"

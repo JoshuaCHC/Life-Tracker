@@ -7,8 +7,8 @@ import { Home } from './Home.tsx';
 import { Layout } from './Layout.tsx';
 import { MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { Tasks } from './Tasks.tsx';
-import { Calendar } from './Calendar.tsx';
+import { Tasks } from './features/tasks/Tasks.tsx';
+import { Calendar } from './features/calendar/Calendar.tsx';
 
 const router = createBrowserRouter([
   {

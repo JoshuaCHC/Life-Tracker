@@ -6,14 +6,14 @@ import listPlugin from "@fullcalendar/list";
 import { useMemo, useState } from "react";
 import { Flex, Grid, Paper } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useGetScheduledTasksQuery } from "./hooks/scheduledTasksService";
+import { useGetScheduledTasksQuery } from "../../hooks/data/scheduledTasksService";
 import { DateSelectArg, EventClickArg, EventContentArg } from "@fullcalendar/core/index.js";
-import { CompleteTaskModal } from "./CompleteTaskModal";
-import { CreateEventModal } from "./components/createEventModal/CreateEventModal";
+import { CompleteTaskModal } from "../../components/completeTaskModal/CompleteTaskModal";
+import { CreateEventModal } from "../../components/createEventModal/CreateEventModal";
 import dayjs from "dayjs";
-import { useGetEventTasks } from "./hooks/eventTasksService";
-import { convertEventToCalendarEvent, convertScheduledTaskToCalendarEvent } from "./utils/calendarEventMapper";
-import { EventDateFields, ScheduledTaskDto } from "./models/dtos/taskDtos";
+import { useGetEventTasks } from "../../hooks/data/eventTasksService";
+import { convertEventToCalendarEvent, convertScheduledTaskToCalendarEvent } from "../../utils/calendarEventMapper";
+import { EventDateFields, ScheduledTaskDto } from "../../models/dtos/taskDtos";
 
 export const Calendar = () => {
   const [opened, { open, close }] = useDisclosure(false);
