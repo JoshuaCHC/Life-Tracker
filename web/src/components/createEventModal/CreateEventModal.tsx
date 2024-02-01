@@ -1,4 +1,3 @@
-import { EventTask } from "../../models/tasks";
 import { useForm, Controller } from "react-hook-form";
 import { useAddEventTask } from "../../hooks/eventTasksService";
 import {
@@ -7,15 +6,18 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Button,
 } from "@mui/material";
 import { InputFactory } from "../../InputFactory";
-import { Button } from "@mantine/core";
 import { dateFields, textFields } from "./CreateEventModalFields";
+import { EventDateFields, EventTaskCreateDto } from "../../models/dtos/taskDtos";
+import dayjs from "dayjs";
+import { useEffect } from "react";
 
 type CreateEventModalProps = {
   opened: boolean;
   close: () => void;
-  newEvent: EventTask | undefined;
+  newEvent: EventDateFields | undefined;
 };
 
 export const CreateEventModal = ({
@@ -25,25 +27,31 @@ export const CreateEventModal = ({
 }: CreateEventModalProps) => {
   const createEvent = useAddEventTask();
 
-  const { control, handleSubmit, reset, watch } = useForm<EventTask>({
-    values: newEvent,
+  const { control, handleSubmit, reset, watch, setValue } = useForm<EventTaskCreateDto>({
+    values: { allDay: newEvent?.allDay ?? false, startDate: newEvent?.startDate, endDate: newEvent?.endDate, title: "", location: "", expectedCost: undefined },
   });
 
-  const onClose = () => {
-    reset();
-    close();
-  };
-
-  const onSubmit = (data: EventTask) => {
-    createEvent.mutate(data)
+  const closeDialog = () => {
     reset()
     close()
+  }
+
+  const onSubmit = (data: EventTaskCreateDto) => {
+    createEvent.mutate(data)
+    closeDialog()
   };
+
+  useEffect(() => {
+    if(watch("allDay").valueOf()){
+      const newDate = dayjs(watch('startDate')?.valueOf()).add(1, 'day')
+      setValue("endDate", newDate)
+    }
+  }, [watch("allDay").valueOf(), watch('startDate')?.valueOf()])
 
   return (
     <Dialog
       open={opened}
-      onClose={onClose}
+      onClose={closeDialog}
     >
       <DialogTitle>Create Event</DialogTitle>
       <DialogContent>
@@ -53,7 +61,7 @@ export const CreateEventModal = ({
         >
           {textFields.map((value) => (
             <Controller
-              name={value.name as keyof EventTask}
+              name={value.name as keyof EventTaskCreateDto}
               control={control}
               render={({ field }) =>
                 (
@@ -72,7 +80,7 @@ export const CreateEventModal = ({
           >
             {dateFields.map((value) => (
               <Controller
-                name={value.name as keyof EventTask}
+                name={value.name as keyof EventTaskCreateDto}
                 control={control}
                 render={({ field }) =>
                   (
@@ -81,7 +89,7 @@ export const CreateEventModal = ({
                       label={value.label}
                       type={value.type}
                       disabled={
-                        value.type === "date" && watch("allDay").valueOf()
+                        value.name === "endDate" && watch("allDay").valueOf()
                       }
                     />
                   ) ?? <> </>
@@ -92,7 +100,7 @@ export const CreateEventModal = ({
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Close</Button>
+        <Button onClick={closeDialog}>Close</Button>
         <Button onClick={handleSubmit(onSubmit)}>Create Event</Button>
       </DialogActions>
     </Dialog>

@@ -1,11 +1,10 @@
 import { Checkbox, FormControlLabel, TextField } from "@mui/material";
-import { ControllerRenderProps } from "react-hook-form";
-import { EventTask } from "./models/tasks";
+import { ControllerRenderProps, FieldValue } from "react-hook-form";
 import { LocalizationProvider, DateTimeField } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 type inputFactoryProps = {
-  field: ControllerRenderProps<EventTask, keyof EventTask>;
+  field: any;
   label: string;
   type: string;
   disabled?: boolean;

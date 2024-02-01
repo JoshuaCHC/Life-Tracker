@@ -8,8 +8,10 @@ namespace EventsService.Profiles
     {
         public ReferenceTaskProfile()
         {
-            CreateMap<ReferenceTask, ReferenceTaskReadDto>();
-            CreateMap<ReferenceTaskCreateDto, ReferenceTask>();
+            CreateMap<ReferenceTask, ReferenceTaskReadDto>()
+                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate.ToString("O")));
+            CreateMap<ReferenceTaskCreateDto, ReferenceTask>()
+                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => DateTime.Parse(src.StartDate, null, System.Globalization.DateTimeStyles.RoundtripKind)));
         }
     }
 }

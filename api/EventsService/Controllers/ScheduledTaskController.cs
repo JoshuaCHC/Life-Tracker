@@ -42,8 +42,9 @@ namespace EventsService.Controllers
             {
                 ReferenceTaskId = referenceTask.Id,
                 Name = referenceTask.Name,
-                DueDate = dto.CompletedDate.AddDays(referenceTask.RecurDays)
+                DueDate = DateTime.Parse(dto.CompletedDate, null, System.Globalization.DateTimeStyles.RoundtripKind).AddDays(referenceTask.RecurDays)
             };
+
             var rescheduledTask = _mapper.Map<ScheduledTask>(reschedulingTask);
             _scheduledTaskRepo.CreateScheduledTask(rescheduledTask);
 

@@ -8,9 +8,13 @@ namespace EventsService.Profiles
     {
         public ScheduledTaskProfile()
         {
-            CreateMap<ScheduledTask, ScheduledTaskReadDto>();
-            CreateMap<ScheduledTaskCreateDto, ScheduledTask>();
-            CreateMap<ScheduledTaskCompleteDto, ScheduledTask>();
+            CreateMap<ScheduledTask, ScheduledTaskReadDto>()
+                .ForMember(dest => dest.CompletedDate, opt => opt.MapFrom(src => src.CompletedDate.ToString("o")))
+                .ForMember(dest => dest.DueDate, opt => opt.MapFrom(src => src.DueDate.ToString("o")));
+            CreateMap<ScheduledTaskCreateDto, ScheduledTask>()
+                .ForMember(dest => dest.CompletedDate, opt => new DateTime());
+            CreateMap<ScheduledTaskCompleteDto, ScheduledTask>()
+                .ForMember(dest => dest.CompletedDate, opt => opt.MapFrom(src => DateTime.Parse(src.CompletedDate, null, System.Globalization.DateTimeStyles.RoundtripKind)));
         }
     }
 }

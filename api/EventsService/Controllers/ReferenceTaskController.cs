@@ -55,8 +55,9 @@ namespace EventsService.Controllers
             {
                 ReferenceTaskId = referenceTask.Id,
                 Name = referenceTask.Name,
-                DueDate = dto.StartDate
+                DueDate = referenceTask.StartDate
             };
+
             var rescheduledTask = _mapper.Map<ScheduledTask>(reschedulingTask);
             _scheduledTaskRepo.CreateScheduledTask(rescheduledTask);
 

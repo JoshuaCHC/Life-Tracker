@@ -1,13 +1,14 @@
 import { Modal, TextInput, Button, Stack } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { ScheduledTask } from "./models/tasks";
 import { useCompleteScheduledTaskMutation } from "./hooks/scheduledTasksService";
 import { useState } from "react";
+import dayjs from "dayjs";
+import { ScheduledTaskDto } from "./models/dtos/taskDtos";
 
 type CompleteTaskModalProps = {
   opened: boolean;
   close: () => void;
-  selectedEvent: ScheduledTask | undefined;
+  selectedEvent: ScheduledTaskDto | undefined;
 };
 
 export const CompleteTaskModal = ({
@@ -46,8 +47,8 @@ export const CompleteTaskModal = ({
           onClick={() => {
             completeTask.mutate({
               id: selectedEvent?.id!,
-              completedDate: new Date(),
-              completedInMinutes: completedInMinutes, //TODO ADD SOMETHING TO HANDLE THIS
+              completedDate: dayjs(),
+              completedInMinutes: completedInMinutes,
               referenceTaskId: selectedEvent?.referenceTaskId!,
             });
             close();

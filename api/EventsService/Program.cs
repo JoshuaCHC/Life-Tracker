@@ -18,6 +18,7 @@ else
 
 builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 builder.Services.AddScoped<IScheduledTaskRepo, ScheduledTaskRepo>();
+builder.Services.AddScoped<IEventRepo, EventRepo>();
 builder.Services.AddScoped<ReferenceTaskRepo>();
 builder.Services.AddScoped<IReferenceTaskRepo, CachedReferenceTaskRepo>(); //Injecting the IReferenceTaskRepo into the cached version
 

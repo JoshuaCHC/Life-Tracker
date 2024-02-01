@@ -6,41 +6,37 @@ import listPlugin from "@fullcalendar/list";
 import { useMemo, useState } from "react";
 import { Flex, Grid, Paper } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { ScheduledTask, EventTask } from "./models/tasks";
 import { useGetScheduledTasksQuery } from "./hooks/scheduledTasksService";
 import { DateSelectArg, EventClickArg, EventContentArg } from "@fullcalendar/core/index.js";
 import { CompleteTaskModal } from "./CompleteTaskModal";
 import { CreateEventModal } from "./components/createEventModal/CreateEventModal";
 import dayjs from "dayjs";
+import { useGetEventTasks } from "./hooks/eventTasksService";
+import { convertEventToCalendarEvent, convertScheduledTaskToCalendarEvent } from "./utils/calendarEventMapper";
+import { EventDateFields, ScheduledTaskDto } from "./models/dtos/taskDtos";
 
 export const Calendar = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [createEventModalOpen, setCreateEventModalOpen] = useState(false);
 
-  const [selectedTask, setSelectedTask] = useState<ScheduledTask>();
-  const [newEvent, setNewEvent] = useState<EventTask>();
+  const [selectedTask, setSelectedTask] = useState<ScheduledTaskDto>();
+  const [eventDateFields, setEventDateFields] = useState<EventDateFields>();
 
   const scheduledTasks = useGetScheduledTasksQuery();
+  const events = useGetEventTasks();
 
   const calendarEvents = useMemo(() => {
-    return scheduledTasks.data?.map(scheduledTask => {
-      const completed = new Date(scheduledTask.completedDate).getTime() > 0
-      return {
-        id: scheduledTask.id.toString(),
-        title: scheduledTask.name,
-        date: new Date(scheduledTask.dueDate),
-        allDay: true,
-        color: completed ? "rgba(98, 190, 193, 0.5)" : "#62bec1",
-      }
-    })
-  }, [scheduledTasks.data])
+    const eventTasks = events.data?.map(event => convertEventToCalendarEvent(event))
+    const scheduledEvents = scheduledTasks.data?.map(scheduledTask => convertScheduledTaskToCalendarEvent(scheduledTask))
+    return eventTasks?.concat(scheduledEvents ?? [])
+  }, [scheduledTasks.data, events.data])
 
   const handleDateClick = (selected: DateSelectArg) => {
-    setNewEvent({
+    setEventDateFields({
       startDate: dayjs(selected.start),
       endDate: dayjs(selected.end),
       allDay: selected.allDay
-    } as EventTask)
+    } as EventDateFields)
     
     setCreateEventModalOpen(true)
   };
@@ -50,7 +46,7 @@ export const Calendar = () => {
     open();
   };
 
-  function renderEventContent(eventInfo: EventContentArg) {
+  const renderEventContent = (eventInfo: EventContentArg) => {
     return (
       <Flex style={{ justifyContent: "space-between", paddingLeft: "4px", paddingRight: "8px"}} align="center">
         {eventInfo.event.title}
@@ -102,7 +98,7 @@ export const Calendar = () => {
         </Grid.Col>
       </Grid>
       <CompleteTaskModal opened={opened} close={close} selectedEvent={selectedTask} />
-      <CreateEventModal opened={createEventModalOpen} close={() => setCreateEventModalOpen(false)} newEvent={newEvent} /> 
+      <CreateEventModal opened={createEventModalOpen} close={() => setCreateEventModalOpen(false)} newEvent={eventDateFields} /> 
     </>
   );
 };

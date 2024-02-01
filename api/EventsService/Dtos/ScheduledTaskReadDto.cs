@@ -8,9 +8,9 @@ namespace EventsService.Dtos
 
         public string Name { get; set; }
 
-        public DateTime DueDate { get; set; }
+        public string DueDate { get; set; }
 
-        public DateTime CompletedDate { get; set; }
+        public string CompletedDate { get; set; }
         public int CompletedInMinutes { get; set; }
 
         public int ReferenceTaskId { get; set; }

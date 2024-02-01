@@ -12,7 +12,7 @@ namespace EventsService.Models
 
         public DateTime DueDate { get; set; }
 
-        public DateTime? CompletedDate { get; set; }
+        public DateTime CompletedDate { get; set; }
         public int? CompletedInMinutes { get; set; }
 
         public int ReferenceTaskId { get; set; }
