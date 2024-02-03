@@ -9,7 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import { InputFactory } from "../InputFactory";
-import { dateFields, textFields } from "./CreateEventModalFields";
+import { dateFields, textFields } from "./CreateEventDialogFields";
 import { EventDateFields, EventTaskCreateDto } from "../../models/dtos/taskDtos";
 import dayjs from "dayjs";
 import { useEffect } from "react";
