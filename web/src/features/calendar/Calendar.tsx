@@ -8,18 +8,19 @@ import { Flex, Grid, Paper } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useGetScheduledTasksQuery } from "../../hooks/data/scheduledTasksService";
 import { DateSelectArg, EventClickArg, EventContentArg } from "@fullcalendar/core/index.js";
-import { CompleteTaskModal } from "../../components/completeTaskModal/CompleteTaskModal";
-import { CreateEventModal } from "../../components/createEventModal/CreateEventModal";
+import { CompleteTaskModal } from "../../components/completeTaskModal/CompleteTaskDialog";
+import { CreateEventModal } from "../../components/createEventModal/CreateEventDialog";
 import dayjs from "dayjs";
 import { useGetEventTasks } from "../../hooks/data/eventTasksService";
 import { convertEventToCalendarEvent, convertScheduledTaskToCalendarEvent } from "../../utils/calendarEventMapper";
 import { EventDateFields, ScheduledTaskDto } from "../../models/dtos/taskDtos";
+import { defaultScheduledTaskDto } from "../../models/dtos/emptyDtos";
 
 export const Calendar = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [createEventModalOpen, setCreateEventModalOpen] = useState(false);
 
-  const [selectedTask, setSelectedTask] = useState<ScheduledTaskDto>();
+  const [selectedTask, setSelectedTask] = useState<ScheduledTaskDto>(defaultScheduledTaskDto);
   const [eventDateFields, setEventDateFields] = useState<EventDateFields>();
 
   const scheduledTasks = useGetScheduledTasksQuery();
@@ -42,7 +43,9 @@ export const Calendar = () => {
   };
 
   const handleEventClick = (selected: EventClickArg) => {
-    setSelectedTask(scheduledTasks.data?.find((val) => val.id.toString() === selected.event.id))
+    const selectTask = scheduledTasks.data?.find((val) => val.id.toString() === selected.event.id)
+    if(!selectTask) return
+    setSelectedTask(selectTask)
     open();
   };
 

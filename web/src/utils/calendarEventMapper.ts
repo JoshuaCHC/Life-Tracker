@@ -1,5 +1,6 @@
 import { CalendarEvent } from "../models/calendarEvent";
 import { EventTaskDto, ScheduledTaskDto } from "../models/dtos/taskDtos";
+import { isTaskCompleted } from "./dateUtils";
 
 export const convertEventToCalendarEvent = (event: EventTaskDto) => {
   const completed = isDateInPast(event.endDate);
@@ -29,10 +30,4 @@ export const convertScheduledTaskToCalendarEvent = (
 const isDateInPast = (date: string) => {
   const compareDate = new Date(date)
   return compareDate < new Date()
-}
-
-const isTaskCompleted = (date: string) => {
-  const compareDate = new Date(date)
-  const defaultDate = Date.parse('0001-01-01T00:00:00.0000000')
-  return compareDate.getTime() !== defaultDate
 }

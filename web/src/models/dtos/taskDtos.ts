@@ -31,6 +31,13 @@ export type CompleteScheduledTaskDto = {
   referenceTaskId: number
 }
 
+export type ViewScheduledTaskDto = {
+  name: string,
+  completedDate: Dayjs | undefined,
+  dueDate: Dayjs,
+  completedInMinutes: number
+}
+
 export type EventTaskDto = { 
   id: number,
   title: string,

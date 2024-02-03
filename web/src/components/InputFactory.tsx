@@ -1,6 +1,5 @@
 import { Checkbox, FormControlLabel, TextField } from "@mui/material";
-import { ControllerRenderProps, FieldValue } from "react-hook-form";
-import { LocalizationProvider, DateTimeField } from "@mui/x-date-pickers";
+import { LocalizationProvider, DateTimeField, DesktopDateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 type inputFactoryProps = {
@@ -8,12 +7,14 @@ type inputFactoryProps = {
   label: string;
   type: string;
   disabled?: boolean;
+  isReadOnly?: boolean;
 };
 export const InputFactory = ({
   field,
   label,
   type,
   disabled = false,
+  isReadOnly = false
 }: inputFactoryProps) => {
   switch (type) {
     case "number":
@@ -23,6 +24,10 @@ export const InputFactory = ({
           variant="outlined"
           label={label}
           type={"number"}
+          InputProps={{
+            readOnly: isReadOnly ? true : false,
+          }}
+          disabled={disabled}
         />
       );
 
@@ -33,18 +38,25 @@ export const InputFactory = ({
           variant="outlined"
           label={label}
           type={"text"}
+          InputProps={{
+            readOnly: isReadOnly ? true : false,
+          }}
         />
       );
 
     case "date":
       return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateTimeField
+          <DesktopDateTimePicker 
             {...field}
             label={label}
             variant="outlined"
             defaultValue={field.value}
             disabled={disabled}
+            format={'DD/MM/YYYY hh:mm A'}
+            InputProps={{
+              readOnly: isReadOnly ? true : false,
+            }}
           />
         </LocalizationProvider>
       );
