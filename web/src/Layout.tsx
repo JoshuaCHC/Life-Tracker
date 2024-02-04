@@ -1,94 +1,98 @@
-import { AppShell, Burger, Group, NavLink, Stack, Text } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconHome2 } from "@tabler/icons-react";
-import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import {
+  CssBaseline,
+  AppBar,
+  Toolbar,
+  Typography,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Box,
+  Drawer,
+  Divider,
+  List,
+  ListItem,
+} from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import TaskIcon from "@mui/icons-material/Task";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { useTheme } from '@mui/material/styles';
+const drawerWidth = 240;
 
 export const Layout = () => {
-  const [opened, { toggle }] = useDisclosure();
-  const [active, setActive] = useState(0);
+  const fields = [
+    {
+      icon: <HomeIcon />,
+      path: "/",
+      label: "Home",
+    },
+    {
+      icon: <TaskIcon />,
+      path: "/tasks",
+      label: "Tasks",
+    },
+    {
+      icon: <CalendarMonthIcon />,
+      path: "/calendar",
+      label: "Calendar",
+    },
+  ];
   const navigate = useNavigate();
-
+  const theme = useTheme();
   return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
-      padding="md"
-    >
-      <AppShell.Header>
-        <Group
-          gap="16px"
-          dir="row"
-          style={{ padding:"16px", alignContent: "center", justifyContent: "flex-start"}}
-        >
-          <Burger
-            opened={opened}
-            onClick={toggle}
-            hiddenFrom="sm"
-            size="sm"
-          />
-          <Text
-            variant="h5"
+    <Box sx={{ display: "flex", height: "100vh" }}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <Toolbar>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
           >
             Life Tracker
-          </Text>
-        </Group>
-      </AppShell.Header>
-
-      <AppShell.Navbar p="md">
-        <NavLink
-          label="Home"
-          leftSection={
-            <IconHome2
-              size="1rem"
-              stroke={1.5}
-            />
-          }
-          active={1 === active}
-          onClick={() => {
-            setActive(1);
-            navigate("/");
-          }}
-          variant="subtle"
-        />
-        <NavLink
-          label="Task"
-          leftSection={
-            <IconHome2
-              size="1rem"
-              stroke={1.5}
-            />
-          }
-          active={4 === active}
-          onClick={() => {
-            setActive(2);
-            navigate("/tasks");
-          }}
-          variant="subtle"
-        />
-        <NavLink
-          label="Calendar"
-          leftSection={
-            <IconHome2
-              size="1rem"
-              stroke={1.5}
-            />
-          }
-          active={5 === active}
-          onClick={() => {
-            setActive(3);
-            navigate("/calendar");
-          }}
-          variant="subtle"
-        />
-      </AppShell.Navbar>
-
-      <AppShell.Main
-        bg="#F2F4F6"
-        style={{ width: "100%" }}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
       >
+        <Toolbar />
+        <Box sx={{ overflow: "auto" }}>
+          <List>
+            {fields.map((value) => (
+              <ListItem
+                key={value.path}
+                disablePadding
+              >
+                <ListItemButton onClick={() => navigate(value.path)}>
+                  <ListItemIcon>{value.icon}</ListItemIcon>
+                  <ListItemText primary={value.label} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+        </Box>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, background: theme.palette.background.default, height: "100%"}}
+        
+      >
+        <Toolbar />
         <Outlet />
-      </AppShell.Main>
-    </AppShell>
+      </Box>
+    </Box>
   );
 };
