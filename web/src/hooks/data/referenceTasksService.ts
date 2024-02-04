@@ -6,7 +6,7 @@ import { CreateReferenceTaskDto, ReferenceTaskDto } from "../../models/dtos/task
 export const useAddReferenceTask = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (referenceTask: CreateReferenceTaskDto) => client.post('/ReferenceTask', referenceTask), 
+    mutationFn: (referenceTask: CreateReferenceTaskDto) => client.post('/ReferenceTask', {...referenceTask, recurDays: parseInt(referenceTask.recurDays)}), 
     onSuccess: () => {
       queryClient.invalidateQueries(QUERY_KEYS.REFERENCE_TASKS);
       queryClient.invalidateQueries(QUERY_KEYS.SCHEDULED_TASKS)

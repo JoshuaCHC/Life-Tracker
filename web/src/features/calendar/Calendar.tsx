@@ -4,105 +4,122 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import { useMemo, useState } from "react";
-import { Flex, Grid, Paper } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { useGetScheduledTasksQuery } from "../../hooks/data/scheduledTasksService";
-import { DateSelectArg, EventClickArg, EventContentArg } from "@fullcalendar/core/index.js";
-import { CompleteTaskModal } from "../../components/completeTaskModal/CompleteTaskDialog";
-import { CreateEventModal } from "../../components/createEventModal/CreateEventDialog";
+import {
+  DateSelectArg,
+  EventClickArg,
+  EventContentArg,
+} from "@fullcalendar/core/index.js";
 import dayjs from "dayjs";
 import { useGetEventTasks } from "../../hooks/data/eventTasksService";
-import { convertEventToCalendarEvent, convertScheduledTaskToCalendarEvent } from "../../utils/calendarEventMapper";
+import {
+  convertEventToCalendarEvent,
+  convertScheduledTaskToCalendarEvent,
+} from "../../utils/calendarEventMapper";
 import { EventDateFields, ScheduledTaskDto } from "../../models/dtos/taskDtos";
 import { defaultScheduledTaskDto } from "../../models/dtos/emptyDtos";
+import { Box, Paper, useTheme } from "@mui/material";
+import { useDialogControl } from "../../hooks/dialogControl";
+import { CompleteTaskDialog } from "../../components/completeTaskDialog/CompleteTaskDialog";
+import { CreateEventDialog } from "../../components/createEventDialog/CreateEventDialog";
 
 export const Calendar = () => {
-  const [opened, { open, close }] = useDisclosure(false);
-  const [createEventModalOpen, setCreateEventModalOpen] = useState(false);
+  const { open: createEventDialogOpen, handleChange: setCreateEventDialogOpen } = useDialogControl();
+  const { open: completeTaskDialogOpen, handleChange: setCompleteTaskDialogOpen } = useDialogControl();
 
-  const [selectedTask, setSelectedTask] = useState<ScheduledTaskDto>(defaultScheduledTaskDto);
+  const theme = useTheme()
+  const [selectedTask, setSelectedTask] = useState<ScheduledTaskDto>(
+    defaultScheduledTaskDto
+  );
   const [eventDateFields, setEventDateFields] = useState<EventDateFields>();
 
   const scheduledTasks = useGetScheduledTasksQuery();
   const events = useGetEventTasks();
 
   const calendarEvents = useMemo(() => {
-    const eventTasks = events.data?.map(event => convertEventToCalendarEvent(event))
-    const scheduledEvents = scheduledTasks.data?.map(scheduledTask => convertScheduledTaskToCalendarEvent(scheduledTask))
-    return eventTasks?.concat(scheduledEvents ?? [])
-  }, [scheduledTasks.data, events.data])
+    const eventTasks = events.data?.map((event) =>
+      convertEventToCalendarEvent(event)
+    );
+    const scheduledEvents = scheduledTasks.data?.map((scheduledTask) =>
+      convertScheduledTaskToCalendarEvent(scheduledTask)
+    );
+    return eventTasks?.concat(scheduledEvents ?? []);
+  }, [scheduledTasks.data, events.data]);
 
   const handleDateClick = (selected: DateSelectArg) => {
     setEventDateFields({
       startDate: dayjs(selected.start),
       endDate: dayjs(selected.end),
-      allDay: selected.allDay
-    } as EventDateFields)
-    
-    setCreateEventModalOpen(true)
+      allDay: selected.allDay,
+    } as EventDateFields);
+
+    setCreateEventDialogOpen(true);
   };
 
   const handleEventClick = (selected: EventClickArg) => {
-    const selectTask = scheduledTasks.data?.find((val) => val.id.toString() === selected.event.id)
-    if(!selectTask) return
-    setSelectedTask(selectTask)
-    open();
+    const selectTask = scheduledTasks.data?.find(
+      (val) => val.id.toString() === selected.event.id
+    );
+    if (!selectTask) return;
+    setSelectedTask(selectTask);
+    setCompleteTaskDialogOpen(true)
   };
 
   const renderEventContent = (eventInfo: EventContentArg) => {
     return (
-      <Flex style={{ justifyContent: "space-between", paddingLeft: "4px", paddingRight: "8px"}} align="center">
+      <Box
+        sx={{
+          justifyContent: "space-between",
+          alignContent: "center",
+          paddingLeft: "4px",
+          paddingRight: "8px",
+        }}
+      >
         {eventInfo.event.title}
-      </Flex>
-    )
-  }
+      </Box>
+    );
+  };
 
   return (
-    <>
-      <Grid
-        gutter={{ base: "16px" }}
-        h="100%"
+    <Box>
+      <Paper
+        elevation={2}
+        sx={{ background: theme.palette.background.paper, borderRadius: "4px", p: "16px" }}
       >
-        {/* CALENDAR */}
-        <Grid.Col
-          p="15px"
-          span={12}
-        >
-          <Paper
-            shadow="md"
-            radius="lg"
-            p="xl"
-            bg="#F8FAFC"
-          >
-            <FullCalendar
-              height="75vh"
-              plugins={[
-                dayGridPlugin,
-                timeGridPlugin,
-                interactionPlugin,
-                listPlugin,
-              ]}
-              headerToolbar={{
-                left: "prev,next today",
-                center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
-              }}
-              initialView="dayGridMonth"
-              editable={true}
-              selectable={true}
-              selectMirror={true}
-              dayMaxEvents={true}
-              eventContent={renderEventContent}
-              select={handleDateClick}
-              eventClick={handleEventClick}
-              events={calendarEvents}
-            />
-          </Paper>
-        </Grid.Col>
-      </Grid>
-      <CompleteTaskModal opened={opened} close={close} selectedEvent={selectedTask} />
-      <CreateEventModal opened={createEventModalOpen} close={() => setCreateEventModalOpen(false)} newEvent={eventDateFields} /> 
-    </>
+        <FullCalendar
+          height="75vh"
+          plugins={[
+            dayGridPlugin,
+            timeGridPlugin,
+            interactionPlugin,
+            listPlugin,
+          ]}
+          headerToolbar={{
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+          }}
+          initialView="dayGridMonth"
+          editable={true}
+          selectable={true}
+          selectMirror={true}
+          dayMaxEvents={true}
+          eventContent={renderEventContent}
+          select={handleDateClick}
+          eventClick={handleEventClick}
+          events={calendarEvents}
+        />
+      </Paper>
+      <CompleteTaskDialog
+        opened={completeTaskDialogOpen}
+        close={() => setCompleteTaskDialogOpen(false)}
+        selectedEvent={selectedTask}
+      />
+      <CreateEventDialog
+        opened={createEventDialogOpen}
+        close={() => setCreateEventDialogOpen(false)}
+        newEvent={eventDateFields}
+      />
+    </Box>
   );
 };
-

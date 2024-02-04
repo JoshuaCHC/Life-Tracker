@@ -14,17 +14,17 @@ import { EventDateFields, EventTaskCreateDto } from "../../models/dtos/taskDtos"
 import dayjs from "dayjs";
 import { useEffect } from "react";
 
-type CreateEventModalProps = {
+type CreateEventDialogProps = {
   opened: boolean;
   close: () => void;
   newEvent: EventDateFields | undefined;
 };
 
-export const CreateEventModal = ({
+export const CreateEventDialog = ({
   opened,
   close,
   newEvent,
-}: CreateEventModalProps) => {
+}: CreateEventDialogProps) => {
   const createEvent = useAddEventTask();
 
   const { control, handleSubmit, reset, watch, setValue } = useForm<EventTaskCreateDto>({

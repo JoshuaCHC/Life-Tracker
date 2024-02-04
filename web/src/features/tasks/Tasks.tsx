@@ -1,135 +1,169 @@
 import {
-  Grid,
-  Paper,
+  CreateReferenceTaskDto,
+  ReferenceTaskDto,
+  ViewScheduledTaskDto,
+} from "../../models/dtos/taskDtos";
+import {
+  useAddReferenceTask,
+  useGetReferenceTasks,
+} from "../../hooks/data/referenceTasksService";
+import { Controller, useForm } from "react-hook-form";
+import {
+  Box,
   Button,
   Card,
-  Group,
-  Text,
+  Grid,
+  Paper,
   Stack,
-  TextInput,
-  Select,
-} from "@mantine/core";
-import { useState } from "react";
-import { DateInput } from "@mantine/dates";
-import { ReferenceTaskDto } from "../../models/dtos/taskDtos"
-import { useAddReferenceTask, useGetReferenceTasks } from "../../hooks/data/referenceTasksService";
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { InputFactory } from "../../components/InputFactory";
+import { defaultCreateReferenceTaskDto } from "../../models/dtos/emptyDtos";
 
 export const Tasks = () => {
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [taskName, setTaskName] = useState("");
-  const [description, setDescription] = useState("");
-  const [numDays, setNumDays] = useState("");
-
   const referenceTasks = useGetReferenceTasks();
   const addReferenceTask = useAddReferenceTask();
-  
+
+  const { control, handleSubmit, reset } = useForm<CreateReferenceTaskDto>({
+    defaultValues: defaultCreateReferenceTaskDto,
+  });
+
+  const fields = [
+    {
+      name: "name",
+      label: "Name",
+      type: "text",
+    },
+    {
+      name: "description",
+      label: "Description",
+      type: "text",
+    },
+    {
+      name: "startDate",
+      label: "Start Date",
+      type: "date",
+    },
+    {
+      name: "recurDays",
+      label: "Pick when task should recur",
+      type: "select",
+      data: [
+        { value: "0", label: "Never" },
+        { value: "1", label: "Every day" },
+        { value: "2", label: "Every 2 days" },
+        { value: "3", label: "Every 3 days" },
+        { value: "7", label: "Every week" },
+        { value: "14", label: "Every fortnight" },
+        { value: "30", label: "Every month" },
+      ],
+    },
+  ];
+
+  const theme = useTheme();
+
+  const onSubmit = (data: CreateReferenceTaskDto) => {
+    addReferenceTask.mutate(data);
+    reset();
+  };
   //TODO make this into a form using react hook form to make it easier to use
   return (
     <Grid
-      gutter={{ base: "16px" }}
-      h="100%"
+      container
+      spacing={4}
     >
-      <Grid.Col span={5}>
-        <Paper
-          shadow="md"
-          radius="lg"
-          p="xl"
-          bg="#F8FAFC"
-        >
-          <TextInput
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-            label="Task name"
-            pb="8px"
-          />
-          <TextInput
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            label="Description"
-            pb="8px"
-          />
-          <DateInput
-            value={startDate}
-            onChange={setStartDate}
-            label="Start date"
-            placeholder="Select start date"
-            pb="8px"
-          />
-          <Select
-            label="Recurs"
-            placeholder="Pick when task should recur"
-            data={[
-              { value: "0", label: "Never" },
-              { value: "1", label: "Every day" },
-              { value: "2", label: "Every 2 days" },
-              { value: "3", label: "Every 3 days" },
-              { value: "7", label: "Every week" },
-              { value: "14", label: "Every fornight" },
-              { value: "30", label: "Every month" },
-            ]}
-            value={numDays}
-            onChange={(e) => setNumDays(e ?? "0")}
-            pb="8px"
-          />
-          <Button
-            onClick={() => {
-              if(!startDate || !numDays){
-                return; 
-              }
-              addReferenceTask.mutate({ name: taskName, description: description, startDate: startDate.toISOString(), recurDays: parseInt(numDays)});
-              setTaskName("");
-            }}
-          >
-            Add task
-          </Button>
-        </Paper>
-      </Grid.Col>
-      <Grid.Col
-        span={7}
-        w="100%"
-        h="100%"
-        mb="xl"
+      <Grid
+        item
+        xs={4}
       >
         <Paper
-          shadow="md"
-          radius="lg"
-          p="xl"
-          bg="#F8FAFC"
+          elevation={2}
+          sx={{
+            background: theme.palette.background.paper,
+            borderRadius: "4px",
+            p: "16px",
+          }}
+        >
+          <Typography> Add new task</Typography>
+          <Stack
+            gap={"12px"}
+            sx={{ pt: "8px" }}
+          >
+            {fields.map((value) => (
+              <Controller
+                name={value.name as keyof CreateReferenceTaskDto}
+                control={control}
+                render={({ field }) =>
+                  (
+                    <InputFactory
+                      field={field}
+                      label={value.label}
+                      type={value.type}
+                      data={value.data}
+                    />
+                  ) ?? <> </>
+                }
+              />
+            ))}
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              sx={{ width: "100%" }}
+              variant="outlined"
+            >
+              Add task
+            </Button>
+          </Stack>
+        </Paper>
+      </Grid>
+      <Grid
+        item
+        xs={8}
+      >
+        <Paper
+          elevation={2}
+          sx={{
+            background: theme.palette.background.paper,
+            borderRadius: "4px",
+            p: "16px",
+          }}
         >
           <Stack gap={"16px"}>
             {referenceTasks.data?.map((task: ReferenceTaskDto) => {
               return (
                 <Card
-                  radius="lg"
-                  p="xl"
-                  bg="#F8FAFC"
-                  withBorder
+                  sx={{
+                    borderRadius: theme.shape.borderRadius,
+                    borderColor: "grey.200",
+                    borderStyle: "solid",
+                    borderWidth: "1px",
+                    p: 2,
+                    background: theme.palette.grey[50],
+                  }}
                 >
-                  <Group
-                    justify="space-between"
-                    mt="md"
-                    mb="xs"
+                  <Typography variant="h5">{task.name}</Typography>
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
                   >
-                    <Text fw={500}>{task.name}</Text>
-                  </Group>
-                  <Text
-                    size="sm"
-                    c="dimmed"
-                  >
-                    Description: {task.description}
-                  </Text>
-                  <Text
-                    size="sm"
-                    c="dimmed"
-                  >
-                    {`Start date: ${new Date(task.startDate).toLocaleDateString('en-AU', {day: 'numeric', month: 'long'})}`}
-                  </Text>
+                    <Typography variant="body1">
+                      Description: {task.description}
+                    </Typography>
+                    <Typography variant="body1">
+                      {`Start date: ${new Date(
+                        task.startDate
+                      ).toLocaleDateString("en-AU", {
+                        day: "numeric",
+                        month: "long",
+                      })}`}
+                    </Typography>
+                  </Box>
                 </Card>
               );
             })}
           </Stack>
         </Paper>
-      </Grid.Col>
+      </Grid>
     </Grid>
   );
 };

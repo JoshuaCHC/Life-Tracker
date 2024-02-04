@@ -5,17 +5,17 @@ import { Controller, useForm } from "react-hook-form";
 import { InputFactory } from "../InputFactory";
 import { convertScheduledTaskToViewScheduledTask } from "../../utils/scheduledTaskDtoMapper";
 
-type CompleteTaskModalProps = {
+type CompleteTaskDialogProps = {
   opened: boolean;
   close: () => void;
   selectedEvent: ScheduledTaskDto;
 };
 
-export const CompleteTaskModal = ({
+export const CompleteTaskDialog = ({
   opened,
   close,
   selectedEvent,
-}: CompleteTaskModalProps) => {
+}: CompleteTaskDialogProps) => {
   const completeTask = useCompleteScheduledTaskMutation();
   const isComplete = new Date(selectedEvent?.completedDate!).getTime() > 0;
 

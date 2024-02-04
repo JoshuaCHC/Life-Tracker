@@ -20,8 +20,8 @@ export type ReferenceTaskDto = {
 export type CreateReferenceTaskDto = {
   name: string,
   description: string,
-  startDate: string,
-  recurDays: number
+  startDate: string | null,
+  recurDays: string
 }
 
 export type CompleteScheduledTaskDto = {
