@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
 builder.Services.AddScoped<ICommandRepo, CommandRepo>();
+builder.Services.AddScoped<IPaymentRepo, PaymentRepo>();
 builder.Services.AddControllers();
 
 builder.Services.AddHostedService<MessageBusSubscriber>();
@@ -31,7 +32,5 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
-
-PrepDb.PrepPopulation(app);
 
 app.Run();
