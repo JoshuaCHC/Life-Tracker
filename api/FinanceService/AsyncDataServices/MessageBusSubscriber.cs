@@ -5,7 +5,6 @@ using System.Text;
 
 namespace FinanceService.AsyncDataServices
 {
-    //Building a background service to constantly listen on the queue, as opposed to the other one which creates, fires a message and is released
     public class MessageBusSubscriber : BackgroundService
     {
         private readonly IConfiguration _configuration;

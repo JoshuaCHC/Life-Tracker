@@ -11,17 +11,17 @@ spec: #rules of routing
     - host: acme.com #need to update localhost file to show this directing to local address
       http: 
         paths:
-          - path: /api/platforms
+          - path: /api/events
             pathType: Prefix
             backend: 
               service: 
-                name: platforms-clusterip-service
+                name: events-clusterip-service
                 port: 
                   number: 80
-          - path: /api/c/platforms
+          - path: /api/c/payments
             pathType: Prefix
             backend: 
               service: 
-                name: commands-clusterip-service
+                name: finance-clusterip-service
                 port: 
                   number: 80

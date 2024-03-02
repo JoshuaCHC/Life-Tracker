@@ -1,31 +1,31 @@
 apiVersion: apps/v1 #what version of the api it is
 kind: Deployment
 metadata:
-  name: platforms-depl
+  name: events-depl
 spec: 
   replicas: 1
   selector: 
     matchLabels: 
-      app: platformservice #select what we deploy
+      app: eventsservice #select what we deploy
   template:
     metadata:
       labels:
-        app: platformservice #define what we deploy
+        app: eventsservice #define what we deploy
     spec:
       containers: 
-      - name: platformservice
-        image: jcheng710/platformservice:latest
+      - name: eventsservice
+        image: jcheng710/eventsservice:latest
 --- #the internal ip for the service
 apiVersion: v1 #what version of the api it is
 kind: Service
 metadata:
-  name: platforms-clusterip-service
+  name: events-clusterip-service
 spec:
   type: ClusterIP
   selector:
-    app: platformservice
+    app: eventsservice
   ports:
-  - name: platformservice
+  - name: eventsservice
     protocol: TCP
     port: 80
     targetPort: 80

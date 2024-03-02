@@ -24,34 +24,26 @@ namespace FinanceService.EventProcessing
             //If it gets more complex, should extract handling code into separate methods
             switch (eventType)
             {
-                case EventType.PlatformPublished:
-                    AddPlatform(message);
+                case EventType.CreateForecastPayment:
+                    AddForecastPayment(message);
                     break;
                 default:
                     break;
             }
         }
 
-        private void AddPlatform(string platformPublishedMessage)
+        private void AddForecastPayment(string forecastPaymentCreatedMessage)
         {
             using (var scope = _scopeFactory.CreateScope())
             {
-                var repo = scope.ServiceProvider.GetRequiredService<ICommandRepo>(); //To do with service lifetime of repo and event processor
+                var repo = scope.ServiceProvider.GetRequiredService<IForecastPaymentRepo>(); //To do with service lifetime of repo and event processor
 
-                var platformPublishedDto = JsonSerializer.Deserialize<PlatformPublishedDto>(platformPublishedMessage);
+                var forecastPaymentCreate = JsonSerializer.Deserialize<ForecastPaymentCreatedDto>(forecastPaymentCreatedMessage);
 
                 try
                 {
-                    var platform = _mapper.Map<Platform>(platformPublishedDto);
-                    if (!repo.ExternalPlatformExists(platform.ExternalID))
-                    {
-                        repo.CreatePlatform(platform);
-                        repo.SaveChanges();
-                    }
-                    else
-                    {
-                        Console.WriteLine("--> Platform already exists");
-                    }
+                    var forecastPayment = _mapper.Map<ForecastPayment>(forecastPaymentCreate);
+                    repo.CreateForecastPayment(forecastPayment);
                 }
                 catch (Exception ex)
                 {
@@ -67,9 +59,9 @@ namespace FinanceService.EventProcessing
             var eventType = JsonSerializer.Deserialize<GenericEventDto>(notificationMessage); //Just want to pull the EventDto from the notification (getting the Event property from the object)
             switch (eventType.Event)
             {
-                case "Platform_Published":
-                    Console.WriteLine("--> Platform Published Event Detected");
-                    return EventType.PlatformPublished;
+                case "Forecast_Payment_Created":
+                    Console.WriteLine("--> Forecast Payment Created Event Detected");
+                    return EventType.CreateForecastPayment;
                 default:
                     Console.WriteLine("--> Could not determine event type");
                     return EventType.Undetermined;
@@ -79,7 +71,7 @@ namespace FinanceService.EventProcessing
 
     enum EventType
     {
-        PlatformPublished,
+        CreateForecastPayment,
         Undetermined
     }
 }

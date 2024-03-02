@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EventsService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/events/[controller]")]
     [ApiController]
     public class ScheduledTaskController : ControllerBase
     {

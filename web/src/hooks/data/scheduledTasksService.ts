@@ -11,7 +11,7 @@ export const useGetScheduledTasksQuery = () => {
     queryKey: QUERY_KEYS.SCHEDULED_TASKS,
     queryFn: () =>
       client
-        .get<ScheduledTaskDto[]>("/ScheduledTask")
+        .get<ScheduledTaskDto[]>("Events/ScheduledTask")
         .then((resp) => resp.data),
     refetchOnWindowFocus: false,
   });
@@ -25,7 +25,7 @@ export const useCompleteScheduledTaskMutation = () => {
         ...completedTask,
         completedDate: completedTask.completedDate?.toISOString(),
       };
-      return client.post("/ScheduledTask", createDto);
+      return client.post("Events/ScheduledTask", createDto);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(QUERY_KEYS.SCHEDULED_TASKS);

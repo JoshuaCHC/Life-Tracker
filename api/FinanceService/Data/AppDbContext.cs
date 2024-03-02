@@ -10,13 +10,11 @@ namespace FinanceService.Data
 
         }
 
-        public DbSet<Platform> Platforms { get; set; }
-        public DbSet<Command> Commands { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<ForecastPayment> ForecastPayments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Platform>().HasMany(p => p.Commands).WithOne(p => p.Platform).HasForeignKey(p => p.PlatformId);
-            modelBuilder.Entity<Command>().HasOne(c => c.Platform).WithMany(c => c.Commands).HasForeignKey(p => p.PlatformId);
         }
     }
 }

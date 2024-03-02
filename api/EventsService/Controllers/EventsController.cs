@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EventsService.AsyncDataServices;
 using EventsService.Data;
 using EventsService.Dtos;
 using EventsService.Models;
@@ -12,12 +13,14 @@ namespace EventsService.Controllers
     {
         private readonly IEventRepo _eventRepo;
         private readonly IMapper _mapper;
+        private readonly IMessageBusClient _messageBusClient;
 
 
-        public EventsController(IEventRepo eventRepo, IMapper mapper)
+        public EventsController(IEventRepo eventRepo, IMapper mapper, IMessageBusClient messageBusClient)
         {
             _eventRepo = eventRepo;
             _mapper = mapper;
+            _messageBusClient = messageBusClient;
         }
 
         [HttpGet]
@@ -48,6 +51,18 @@ namespace EventsService.Controllers
             _eventRepo.CreateEvent(newEvent);
 
             var createdEvent = _mapper.Map<EventReadDto>(newEvent);
+
+            try
+            {
+                var forecastPayment = _mapper.Map<ForecastPaymentCreatedDto>(createdEvent);
+                forecastPayment.Event = "Forecast_Payment_Created"; //Have a documented library of Events, with associated payloads so everyone can access 
+                _messageBusClient.CreateForecastPayment(forecastPayment);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("--> Could not send asynchronous update", ex.Message);
+            }
+
 
             return CreatedAtRoute(nameof(GetEventById), new { createdEvent.Id }, createdEvent);
         }
