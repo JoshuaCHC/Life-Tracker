@@ -14,6 +14,10 @@ namespace EventsService.Profiles
             CreateMap<EventCreateDto, Event>()
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => DateTime.Parse(src.StartDate, null, System.Globalization.DateTimeStyles.RoundtripKind)))
                 .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => DateTime.Parse(src.EndDate, null, System.Globalization.DateTimeStyles.RoundtripKind)));
+            CreateMap<EventReadDto, ForecastPaymentCreatedDto>()
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTime.Parse(src.StartDate, null, System.Globalization.DateTimeStyles.RoundtripKind)))
+                .ForMember(dest => dest.EventId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.ExpectedCost));
 
         }
     }

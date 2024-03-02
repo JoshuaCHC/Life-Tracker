@@ -12,11 +12,13 @@ namespace FinanceService.Controllers
     public class PaymentsController : ControllerBase
     {
         private readonly IPaymentRepo _repo;
+        private readonly IForecastPaymentRepo _forecastPaymentRepo;
         private readonly IMapper _mapper;
-        public PaymentsController(IPaymentRepo repo, IMapper mapper)
+        public PaymentsController(IPaymentRepo repo, IForecastPaymentRepo forecastPaymentRepo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
+            _forecastPaymentRepo = forecastPaymentRepo;
         }
 
         [HttpGet]
@@ -24,6 +26,13 @@ namespace FinanceService.Controllers
         {
             var payments = _repo.GetAllPayments();
             return Ok(_mapper.Map<IEnumerable<PaymentReadDto>>(payments));
+        }
+
+        [HttpGet("forcastPayment")]
+        public ActionResult<IEnumerable<ForecastPayment>> GetForecastPayments()
+        {
+            var payments = _forecastPaymentRepo.GetAllForecastPayments();
+            return Ok(payments);
         }
 
         [HttpPost]

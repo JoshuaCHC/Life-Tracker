@@ -30,9 +30,9 @@ namespace EventsService.AsyncDataServices
                 Console.WriteLine($"--> Creating RabbitMQ Connection failed with message: {ex.Message}");
             }
         }
-        public void PublishNewPlatform(PlatformPublishedDto platform)
+        public void CreateForecastPayment(ForecastPaymentCreatedDto forecastPayment)
         {
-            var message = JsonSerializer.Serialize(platform);
+            var message = JsonSerializer.Serialize(forecastPayment);
 
             if (_connection.IsOpen)
             {

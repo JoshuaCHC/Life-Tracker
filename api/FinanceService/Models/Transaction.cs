@@ -11,7 +11,7 @@ namespace FinanceService.Models
         [Required]
         public double Amount { get; set; }
 
-        public string Category { get; set; }
+        public string? Category { get; set; }
 
         [Required]
         public DateTime Date { get; set; }

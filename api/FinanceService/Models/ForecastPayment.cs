@@ -6,7 +6,6 @@ namespace FinanceService.Models
     {
         [Required]
         public int EventId { get; set; }
-
         public int? PaymentId { get; set; }
         public Payment? Payment { get; set; }
     }

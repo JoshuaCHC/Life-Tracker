@@ -4,6 +4,6 @@ namespace EventsService.AsyncDataServices
 {
     public interface IMessageBusClient
     {
-        void PublishNewPlatform(PlatformPublishedDto platform);
+        void CreateForecastPayment(ForecastPaymentCreatedDto platform);
     }
 }
