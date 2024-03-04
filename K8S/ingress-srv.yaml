@@ -11,14 +11,14 @@ spec: #rules of routing
     - host: acme.com #need to update localhost file to show this directing to local address
       http: 
         paths:
-          - path: /api/events
+          - path: /api/
             pathType: Prefix
             backend: 
               service: 
                 name: events-clusterip-service
                 port: 
                   number: 80
-          - path: /api/c/payments
+          - path: /api/c/
             pathType: Prefix
             backend: 
               service: 
