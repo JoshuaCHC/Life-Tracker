@@ -1,6 +1,6 @@
-import { useQueryClient, useMutation } from "react-query";
-import { client } from "../../client";
+import { useMutation } from "react-query";
 import Cookies from 'universal-cookie';
+import client from "../../client";
 
 export const useLogin = () => {
   return useMutation({
@@ -9,7 +9,6 @@ export const useLogin = () => {
       const cookie = new Cookies()
       cookie.set('access_token', data, {
         path: '/',
-        httpOnly: true,
         secure: false // Set to true if using HTTPS
       });
     },

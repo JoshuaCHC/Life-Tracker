@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { QUERY_KEYS } from "../../constants/queryKeys";
 import { EventTaskCreateDto, EventTaskDto } from "../../models/dtos/taskDtos";
-import { client } from "../../client";
+import client from "../../client";
 
 export const useAddEventTask = () => {
   const queryClient = useQueryClient();

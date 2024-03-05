@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { client } from "../../client";
 import { QUERY_KEYS } from "../../constants/queryKeys";
 import { CreateReferenceTaskDto, ReferenceTaskDto } from "../../models/dtos/taskDtos";
+import client from "../../client";
 
 export const useAddReferenceTask = () => {
   const queryClient = useQueryClient();
