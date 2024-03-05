@@ -1,17 +1,17 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { client } from "../../client";
 import { QUERY_KEYS } from "../../constants/queryKeys";
 import {
   CompleteScheduledTaskDto,
   ScheduledTaskDto,
 } from "../../models/dtos/taskDtos";
+import client from "../../client";
 
 export const useGetScheduledTasksQuery = () => {
   return useQuery({
     queryKey: QUERY_KEYS.SCHEDULED_TASKS,
     queryFn: () =>
       client
-        .get<ScheduledTaskDto[]>("Events/ScheduledTask")
+        .get<ScheduledTaskDto[]>("ScheduledTask")
         .then((resp) => resp.data),
     refetchOnWindowFocus: false,
   });
@@ -25,7 +25,7 @@ export const useCompleteScheduledTaskMutation = () => {
         ...completedTask,
         completedDate: completedTask.completedDate?.toISOString(),
       };
-      return client.post("Events/ScheduledTask", createDto);
+      return client.post("ScheduledTask", createDto);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(QUERY_KEYS.SCHEDULED_TASKS);

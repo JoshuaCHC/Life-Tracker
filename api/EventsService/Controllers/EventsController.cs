@@ -3,10 +3,12 @@ using EventsService.AsyncDataServices;
 using EventsService.Data;
 using EventsService.Dtos;
 using EventsService.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventsService.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EventsController : ControllerBase
@@ -24,6 +26,7 @@ namespace EventsService.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<EventReadDto>), 200)]
         public ActionResult<IEnumerable<EventReadDto>> GetEvents()
         {
             var events = _eventRepo.GetAllEvents();
@@ -32,6 +35,7 @@ namespace EventsService.Controllers
         }
 
         [HttpGet("{id}", Name = "GetEventById")]
+        [ProducesResponseType(typeof(EventReadDto), 200)]
         public ActionResult<EventReadDto> GetEventById(int id)
         {
             var foundEvent = _eventRepo.GetEventById(id);
@@ -45,6 +49,7 @@ namespace EventsService.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(EventReadDto), 200)]
         public ActionResult<EventReadDto> CreateEvent(EventCreateDto dto)
         {
             var newEvent = _mapper.Map<Event>(dto);

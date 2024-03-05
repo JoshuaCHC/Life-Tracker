@@ -2,11 +2,13 @@
 using EventsService.Data;
 using EventsService.Dtos;
 using EventsService.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventsService.Controllers
 {
-    [Route("api/events/[controller]")]
+    [Authorize]
+    [Route("api/[controller]")]
     [ApiController]
     public class ReferenceTaskController : ControllerBase
     {

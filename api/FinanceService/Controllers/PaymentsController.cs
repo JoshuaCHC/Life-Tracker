@@ -3,11 +3,13 @@ using FinanceService.Data;
 using FinanceService.Dtos;
 using FinanceService.Dtos.Payments;
 using FinanceService.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceService.Controllers
 {
-    [Route("api/c/payments")]
+    [Authorize]
+    [Route("api/c/[controller]")]
     [ApiController]
     public class PaymentsController : ControllerBase
     {
