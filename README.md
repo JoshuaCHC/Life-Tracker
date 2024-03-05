@@ -1,6 +1,6 @@
 # Life tracker
 
-An app to help in all facets of life
+An app to help in all facets of life, and develop understandings of best practices, deployment pathways and assorted technologies.
 
 ## Run the app locally:
 1. Ensure that you have a docker desktop account
