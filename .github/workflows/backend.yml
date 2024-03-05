@@ -14,7 +14,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      working-directory: api
+      working-directory: ./api
       
     steps:
     - uses: actions/checkout@v3
