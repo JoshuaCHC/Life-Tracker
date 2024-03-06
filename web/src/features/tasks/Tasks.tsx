@@ -1,7 +1,6 @@
 import {
   CreateReferenceTaskDto,
   ReferenceTaskDto,
-  ViewScheduledTaskDto,
 } from "../../models/dtos/taskDtos";
 import {
   useAddReferenceTask,
