@@ -10,7 +10,9 @@ internal class Program
 
         // Add services to the container.
         if (builder.Configuration["UseInMemory"] == "y")
+        {
             builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
+        }
         else
         {
             builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("EventsConn")));
