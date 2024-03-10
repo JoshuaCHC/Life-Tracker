@@ -1,18 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EventsService.Dtos
+namespace EventsService.Dtos;
+
+public class ScheduledTaskReadDto
 {
-    public class ScheduledTaskReadDto
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public string DueDate { get; set; }
+    public string DueDate { get; set; }
 
-        public string CompletedDate { get; set; }
-        public int CompletedInMinutes { get; set; }
+    public string CompletedDate { get; set; }
+    public int CompletedInMinutes { get; set; }
 
-        public int ReferenceTaskId { get; set; }
-    }
+    public int ReferenceTaskId { get; set; }
 }

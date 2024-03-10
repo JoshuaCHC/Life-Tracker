@@ -1,9 +1,8 @@
 ﻿using EventsService.Dtos;
 
-namespace EventsService.AsyncDataServices
+namespace EventsService.AsyncDataServices;
+
+public interface IMessageBusClient
 {
-    public interface IMessageBusClient
-    {
-        void CreateForecastPayment(ForecastPaymentCreatedDto platform);
-    }
+    void CreateForecastPayment(ForecastPaymentCreatedDto platform);
 }

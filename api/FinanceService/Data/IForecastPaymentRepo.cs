@@ -1,15 +1,14 @@
 ﻿using FinanceService.Models;
 
-namespace FinanceService.Data
+namespace FinanceService.Data;
+
+public interface IForecastPaymentRepo
 {
-    public interface IForecastPaymentRepo
-    {
-        IEnumerable<ForecastPayment> GetAllForecastPayments();
+    IEnumerable<ForecastPayment> GetAllForecastPayments();
 
-        ForecastPayment GetForecastPaymentById(int id);
+    ForecastPayment GetForecastPaymentById(int id);
 
-        void UpdateForecastPayment(ForecastPayment payment);
+    void UpdateForecastPayment(ForecastPayment payment);
 
-        void CreateForecastPayment(ForecastPayment payment);
-    }
+    void CreateForecastPayment(ForecastPayment payment);
 }

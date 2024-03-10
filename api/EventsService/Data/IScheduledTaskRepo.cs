@@ -1,15 +1,14 @@
 ﻿using EventsService.Models;
 
-namespace EventsService.Data
+namespace EventsService.Data;
+
+public interface IScheduledTaskRepo
 {
-    public interface IScheduledTaskRepo
-    {
-        IEnumerable<ScheduledTask> GetAll();
+    IEnumerable<ScheduledTask> GetAll();
 
-        IEnumerable<ScheduledTask> GetAllOverdue();
+    IEnumerable<ScheduledTask> GetAllOverdue();
 
-        void CreateScheduledTask(ScheduledTask scheduledTask);
+    void CreateScheduledTask(ScheduledTask scheduledTask);
 
-        void CompleteScheduledTask(ScheduledTask scheduledTask);
-    }
+    void CompleteScheduledTask(ScheduledTask scheduledTask);
 }

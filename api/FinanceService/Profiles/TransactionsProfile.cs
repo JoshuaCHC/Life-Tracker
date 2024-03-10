@@ -2,14 +2,13 @@
 using FinanceService.Dtos.Transactions;
 using FinanceService.Models;
 
-namespace FinanceService.Profiles
+namespace FinanceService.Profiles;
+
+public class TransactionsProfile : Profile
 {
-    public class TransactionsProfile: Profile
+    public TransactionsProfile()
     {
-        public TransactionsProfile() 
-        {
-            CreateMap<Transaction, TransactionReadDto>();
-            CreateMap<TransactionCreateDto, Transaction>();
-        }
+        CreateMap<Transaction, TransactionReadDto>();
+        CreateMap<TransactionCreateDto, Transaction>();
     }
 }

@@ -18,6 +18,9 @@
     "src/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "vitest"
+    ],
+    "../api/**/*.cs": [
+      "dotnet format"
     ]
   },
   "dependencies": {

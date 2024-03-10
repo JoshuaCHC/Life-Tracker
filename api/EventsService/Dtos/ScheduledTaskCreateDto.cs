@@ -1,9 +1,8 @@
-﻿namespace EventsService.Dtos
+﻿namespace EventsService.Dtos;
+
+public class ScheduledTaskCreateDto
 {
-    public class ScheduledTaskCreateDto
-    {
-        public string Name { get; set; }
-        public DateTime DueDate { get; set; }
-        public int ReferenceTaskId { get; set; }
-    }
+    public string Name { get; set; }
+    public DateTime DueDate { get; set; }
+    public int ReferenceTaskId { get; set; }
 }

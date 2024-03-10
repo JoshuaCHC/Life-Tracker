@@ -4,74 +4,73 @@ using FinanceService.Dtos;
 using FinanceService.Models;
 using System.Text.Json;
 
-namespace FinanceService.EventProcessing
+namespace FinanceService.EventProcessing;
+
+public class EventProcessor : IEventProcessor
 {
-    public class EventProcessor : IEventProcessor
+    private readonly IServiceScopeFactory _scopeFactory;
+    private readonly IMapper _mapper;
+
+    public EventProcessor(IServiceScopeFactory scopeFactory, IMapper mapper)
     {
-        private readonly IServiceScopeFactory _scopeFactory;
-        private readonly IMapper _mapper;
+        _scopeFactory = scopeFactory; //To generate the repository when we need it
+        _mapper = mapper;
+    }
 
-        public EventProcessor(IServiceScopeFactory scopeFactory, IMapper mapper)
+    public void ProcessEvent(string message)
+    {
+        var eventType = DetermineEvent(message);
+
+        //If it gets more complex, should extract handling code into separate methods
+        switch (eventType)
         {
-            _scopeFactory = scopeFactory; //To generate the repository when we need it
-            _mapper = mapper;
+            case EventType.CreateForecastPayment:
+                AddForecastPayment(message);
+                break;
+            default:
+                break;
         }
+    }
 
-        public void ProcessEvent(string message)
+    private void AddForecastPayment(string forecastPaymentCreatedMessage)
+    {
+        using (var scope = _scopeFactory.CreateScope())
         {
-            var eventType = DetermineEvent(message);
+            var repo = scope.ServiceProvider.GetRequiredService<IForecastPaymentRepo>(); //To do with service lifetime of repo and event processor
 
-            //If it gets more complex, should extract handling code into separate methods
-            switch (eventType)
+            var forecastPaymentCreate = JsonSerializer.Deserialize<ForecastPaymentCreatedDto>(forecastPaymentCreatedMessage);
+
+            try
             {
-                case EventType.CreateForecastPayment:
-                    AddForecastPayment(message);
-                    break;
-                default:
-                    break;
+                var forecastPayment = _mapper.Map<ForecastPayment>(forecastPaymentCreate);
+                repo.CreateForecastPayment(forecastPayment);
             }
-        }
-
-        private void AddForecastPayment(string forecastPaymentCreatedMessage)
-        {
-            using (var scope = _scopeFactory.CreateScope())
+            catch (Exception ex)
             {
-                var repo = scope.ServiceProvider.GetRequiredService<IForecastPaymentRepo>(); //To do with service lifetime of repo and event processor
-
-                var forecastPaymentCreate = JsonSerializer.Deserialize<ForecastPaymentCreatedDto>(forecastPaymentCreatedMessage);
-
-                try
-                {
-                    var forecastPayment = _mapper.Map<ForecastPayment>(forecastPaymentCreate);
-                    repo.CreateForecastPayment(forecastPayment);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"--> Could not add Platform too DB {ex.Message}");
-                }
-            }
-        }
-
-        private EventType DetermineEvent(string notificationMessage)
-        {
-            Console.WriteLine("--> Determining Event");
-
-            var eventType = JsonSerializer.Deserialize<GenericEventDto>(notificationMessage); //Just want to pull the EventDto from the notification (getting the Event property from the object)
-            switch (eventType.Event)
-            {
-                case "Forecast_Payment_Created":
-                    Console.WriteLine("--> Forecast Payment Created Event Detected");
-                    return EventType.CreateForecastPayment;
-                default:
-                    Console.WriteLine("--> Could not determine event type");
-                    return EventType.Undetermined;
+                Console.WriteLine($"--> Could not add Platform too DB {ex.Message}");
             }
         }
     }
 
-    enum EventType
+    private EventType DetermineEvent(string notificationMessage)
     {
-        CreateForecastPayment,
-        Undetermined
+        Console.WriteLine("--> Determining Event");
+
+        var eventType = JsonSerializer.Deserialize<GenericEventDto>(notificationMessage); //Just want to pull the EventDto from the notification (getting the Event property from the object)
+        switch (eventType.Event)
+        {
+            case "Forecast_Payment_Created":
+                Console.WriteLine("--> Forecast Payment Created Event Detected");
+                return EventType.CreateForecastPayment;
+            default:
+                Console.WriteLine("--> Could not determine event type");
+                return EventType.Undetermined;
+        }
     }
+}
+
+internal enum EventType
+{
+    CreateForecastPayment,
+    Undetermined
 }

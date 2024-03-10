@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinanceService.Models
+namespace FinanceService.Models;
+
+public class Payment : Transaction
 {
-    public class Payment: Transaction
-    {
-        [Required]
-        public string Merchant { get; set; }
-    }
+    [Required]
+    public string Merchant { get; set; }
 }
