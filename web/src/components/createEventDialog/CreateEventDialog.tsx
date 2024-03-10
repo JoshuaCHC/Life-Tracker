@@ -1,5 +1,4 @@
-import { useForm, Controller } from "react-hook-form";
-import { useAddEventTask } from "../../hooks/data/eventTasksService";
+import { useForm, Controller } from 'react-hook-form';
 import {
   Stack,
   Dialog,
@@ -7,12 +6,16 @@ import {
   DialogContent,
   DialogActions,
   Button,
-} from "@mui/material";
-import { InputFactory } from "../InputFactory";
-import { dateFields, textFields } from "./CreateEventDialogFields";
-import { EventDateFields, EventTaskCreateDto } from "../../models/dtos/taskDtos";
-import dayjs from "dayjs";
-import { useEffect } from "react";
+} from '@mui/material';
+import dayjs from 'dayjs';
+import { useEffect } from 'react';
+import { useAddEventTask } from '../../hooks/data/eventTasksService';
+import { InputFactory } from '../InputFactory';
+import { dateFields, textFields } from './CreateEventDialogFields';
+import {
+  EventDateFields,
+  EventTaskCreateDto,
+} from '../../models/dtos/taskDtos';
 
 type CreateEventDialogProps = {
   opened: boolean;
@@ -27,38 +30,40 @@ export const CreateEventDialog = ({
 }: CreateEventDialogProps) => {
   const createEvent = useAddEventTask();
 
-  const { control, handleSubmit, reset, watch, setValue } = useForm<EventTaskCreateDto>({
-    values: { allDay: newEvent?.allDay ?? false, startDate: newEvent?.startDate, endDate: newEvent?.endDate, title: "", location: "", expectedCost: undefined },
-  });
+  const { control, handleSubmit, reset, watch, setValue } =
+    useForm<EventTaskCreateDto>({
+      values: {
+        allDay: newEvent?.allDay ?? false,
+        startDate: newEvent?.startDate,
+        endDate: newEvent?.endDate,
+        title: '',
+        location: '',
+        expectedCost: undefined,
+      },
+    });
 
   const closeDialog = () => {
-    reset()
-    close()
-  }
+    reset();
+    close();
+  };
 
   const onSubmit = (data: EventTaskCreateDto) => {
-    createEvent.mutate(data)
-    closeDialog()
+    createEvent.mutate(data);
+    closeDialog();
   };
 
   useEffect(() => {
-    if(watch("allDay").valueOf()){
-      const newDate = dayjs(watch('startDate')?.valueOf()).add(1, 'day')
-      setValue("endDate", newDate)
+    if (watch('allDay').valueOf()) {
+      const newDate = dayjs(watch('startDate')?.valueOf()).add(1, 'day');
+      setValue('endDate', newDate);
     }
-  }, [watch("allDay").valueOf(), watch('startDate')?.valueOf()])
+  }, [watch('allDay').valueOf(), watch('startDate')?.valueOf()]);
 
   return (
-    <Dialog
-      open={opened}
-      onClose={closeDialog}
-    >
+    <Dialog open={opened} onClose={closeDialog}>
       <DialogTitle>Create Event</DialogTitle>
       <DialogContent>
-        <Stack
-          gap={"12px"}
-          sx={{ pt: "8px" }}
-        >
+        <Stack gap="12px" sx={{ pt: '8px' }}>
           {textFields.map((value) => (
             <Controller
               name={value.name as keyof EventTaskCreateDto}
@@ -74,10 +79,7 @@ export const CreateEventDialog = ({
               }
             />
           ))}
-          <Stack
-            direction={"row"}
-            gap={"4px"}
-          >
+          <Stack direction="row" gap="4px">
             {dateFields.map((value) => (
               <Controller
                 name={value.name as keyof EventTaskCreateDto}
@@ -89,7 +91,7 @@ export const CreateEventDialog = ({
                       label={value.label}
                       type={value.type}
                       disabled={
-                        value.name === "endDate" && watch("allDay").valueOf()
+                        value.name === 'endDate' && watch('allDay').valueOf()
                       }
                     />
                   ) ?? <> </>

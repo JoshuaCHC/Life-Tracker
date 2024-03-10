@@ -6,22 +6,23 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@mui/material";
+} from '@mui/material';
 import {
   LocalizationProvider,
   DesktopDateTimePicker,
-} from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-type selectData = {
+} from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+type SelectData = {
   value: string;
   label: string;
 };
 
-type inputFactoryProps = {
+type InputFactoryProps = {
   field: any;
   label: string;
   type: string;
-  data?: selectData[];
+  data?: SelectData[];
   disabled?: boolean;
   isReadOnly?: boolean;
 };
@@ -33,36 +34,36 @@ export const InputFactory = ({
   data = [],
   disabled = false,
   isReadOnly = false,
-}: inputFactoryProps) => {
+}: InputFactoryProps) => {
   switch (type) {
-    case "number":
+    case 'number':
       return (
         <TextField
           {...field}
           variant="outlined"
           label={label}
-          type={"number"}
+          type="number"
           InputProps={{
-            readOnly: isReadOnly ? true : false,
+            readOnly: !!isReadOnly,
           }}
           disabled={disabled}
         />
       );
 
-    case "text":
+    case 'text':
       return (
         <TextField
           {...field}
           variant="outlined"
           label={label}
-          type={"text"}
+          type="text"
           InputProps={{
-            readOnly: isReadOnly ? true : false,
+            readOnly: !!isReadOnly,
           }}
         />
       );
 
-    case "date":
+    case 'date':
       return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DesktopDateTimePicker
@@ -71,14 +72,14 @@ export const InputFactory = ({
             variant="outlined"
             defaultValue={field.value}
             disabled={disabled}
-            format={"DD/MM/YYYY hh:mm A"}
+            format="DD/MM/YYYY hh:mm A"
             InputProps={{
-              readOnly: isReadOnly ? true : false,
+              readOnly: !!isReadOnly,
             }}
           />
         </LocalizationProvider>
       );
-    case "select":
+    case 'select':
       return (
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">{label}</InputLabel>
@@ -94,15 +95,10 @@ export const InputFactory = ({
           </Select>
         </FormControl>
       );
-    case "checkbox":
+    case 'checkbox':
       return (
         <FormControlLabel
-          control={
-            <Checkbox
-              {...field}
-              defaultChecked={!!field.value}
-            />
-          }
+          control={<Checkbox {...field} defaultChecked={!!field.value} />}
           label={label}
         />
       );

@@ -1,33 +1,40 @@
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import listPlugin from "@fullcalendar/list";
-import { useMemo, useState } from "react";
-import { useGetScheduledTasksQuery } from "../../hooks/data/scheduledTasksService";
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
+import { useMemo, useState } from 'react';
 import {
   DateSelectArg,
   EventClickArg,
   EventContentArg,
-} from "@fullcalendar/core/index.js";
-import dayjs from "dayjs";
-import { useGetEventTasks } from "../../hooks/data/eventTasksService";
+} from '@fullcalendar/core';
+import dayjs from 'dayjs';
+import { Box, Paper, useTheme } from '@mui/material';
+import { useGetScheduledTasksQuery } from '../../hooks/data/scheduledTasksService';
+import { useGetEventTasks } from '../../hooks/data/eventTasksService';
 import {
   convertEventToCalendarEvent,
   convertScheduledTaskToCalendarEvent,
-} from "../../utils/calendarEventMapper";
-import { EventDateFields, ScheduledTaskDto } from "../../models/dtos/taskDtos";
-import { defaultScheduledTaskDto } from "../../models/dtos/emptyDtos";
-import { Box, Paper, useTheme } from "@mui/material";
-import { useDialogControl } from "../../hooks/dialogControl";
-import { CompleteTaskDialog } from "../../components/completeTaskDialog/CompleteTaskDialog";
-import { CreateEventDialog } from "../../components/createEventDialog/CreateEventDialog";
+} from '../../utils/calendarEventMapper';
+import { EventDateFields, ScheduledTaskDto } from '../../models/dtos/taskDtos';
+import { defaultScheduledTaskDto } from '../../models/dtos/emptyDtos';
+
+import { useDialogControl } from '../../hooks/dialogControl';
+import { CompleteTaskDialog } from '../../components/completeTaskDialog/CompleteTaskDialog';
+import { CreateEventDialog } from '../../components/createEventDialog/CreateEventDialog';
 
 export const Calendar = () => {
-  const { open: createEventDialogOpen, handleChange: setCreateEventDialogOpen } = useDialogControl();
-  const { open: completeTaskDialogOpen, handleChange: setCompleteTaskDialogOpen } = useDialogControl();
+  const {
+    open: createEventDialogOpen,
+    handleChange: setCreateEventDialogOpen,
+  } = useDialogControl();
+  const {
+    open: completeTaskDialogOpen,
+    handleChange: setCompleteTaskDialogOpen,
+  } = useDialogControl();
 
-  const theme = useTheme()
+  const theme = useTheme();
   const [selectedTask, setSelectedTask] = useState<ScheduledTaskDto>(
     defaultScheduledTaskDto
   );
@@ -50,6 +57,7 @@ export const Calendar = () => {
     setEventDateFields({
       startDate: dayjs(selected.start),
       endDate: dayjs(selected.end),
+
       allDay: selected.allDay,
     } as EventDateFields);
 
@@ -62,29 +70,31 @@ export const Calendar = () => {
     );
     if (!selectTask) return;
     setSelectedTask(selectTask);
-    setCompleteTaskDialogOpen(true)
+    setCompleteTaskDialogOpen(true);
   };
 
-  const renderEventContent = (eventInfo: EventContentArg) => {
-    return (
-      <Box
-        sx={{
-          justifyContent: "space-between",
-          alignContent: "center",
-          paddingLeft: "4px",
-          paddingRight: "8px",
-        }}
-      >
-        {eventInfo.event.title}
-      </Box>
-    );
-  };
+  const renderEventContent = (eventInfo: EventContentArg) => (
+    <Box
+      sx={{
+        justifyContent: 'space-between',
+        alignContent: 'center',
+        paddingLeft: '4px',
+        paddingRight: '8px',
+      }}
+    >
+      {eventInfo.event.title}
+    </Box>
+  );
 
   return (
     <Box>
       <Paper
         elevation={2}
-        sx={{ background: theme.palette.background.paper, borderRadius: "4px", p: "16px" }}
+        sx={{
+          background: theme.palette.background.paper,
+          borderRadius: '4px',
+          p: '16px',
+        }}
       >
         <FullCalendar
           height="75vh"
@@ -95,15 +105,15 @@ export const Calendar = () => {
             listPlugin,
           ]}
           headerToolbar={{
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth',
           }}
           initialView="dayGridMonth"
-          editable={true}
-          selectable={true}
-          selectMirror={true}
-          dayMaxEvents={true}
+          editable
+          selectable
+          selectMirror
+          dayMaxEvents
           eventContent={renderEventContent}
           select={handleDateClick}
           eventClick={handleEventClick}
