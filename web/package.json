@@ -17,10 +17,11 @@
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix",
-      "vitest"
+      "git add"
     ],
     "../api/**/*.cs": [
-      "dotnet format"
+      "dotnet format",
+      "git add"
     ]
   },
   "dependencies": {
