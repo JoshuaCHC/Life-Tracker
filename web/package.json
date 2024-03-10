@@ -21,6 +21,7 @@
     ],
     "../api/**/*.cs": [
       "dotnet format --include",
+      "echo git status",
       "git add"
     ]
   },
