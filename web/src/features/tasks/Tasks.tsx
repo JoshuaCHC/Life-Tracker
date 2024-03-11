@@ -1,22 +1,7 @@
 import { Controller, useForm } from 'react-hook-form';
-import {
-  Box,
-  Button,
-  Card,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
-import {
-  CreateReferenceTaskDto,
-  ReferenceTaskDto,
-} from '../../models/dtos/taskDtos';
-import {
-  useAddReferenceTask,
-  useGetReferenceTasks,
-} from '../../hooks/data/referenceTasksService';
+import { Box, Button, Card, Grid, Paper, Stack, Typography, useTheme } from '@mui/material';
+import { CreateReferenceTaskDto, ReferenceTaskDto } from '../../models/dtos/taskDtos';
+import { useAddReferenceTask, useGetReferenceTasks } from '../../hooks/data/referenceTasksService';
 import { InputFactory } from '../../components/InputFactory';
 import { defaultCreateReferenceTaskDto } from '../../models/dtos/emptyDtos';
 
@@ -84,23 +69,10 @@ export const Tasks = () => {
               <Controller
                 name={value.name as keyof CreateReferenceTaskDto}
                 control={control}
-                render={({ field }) =>
-                  (
-                    <InputFactory
-                      field={field}
-                      label={value.label}
-                      type={value.type}
-                      data={value.data}
-                    />
-                  ) ?? <> </>
-                }
+                render={({ field }) => <InputFactory field={field} label={value.label} type={value.type} data={value.data} /> ?? <> </>}
               />
             ))}
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              sx={{ width: '100%' }}
-              variant="outlined"
-            >
+            <Button onClick={handleSubmit(onSubmit)} sx={{ width: '100%' }} variant="outlined">
               Add task
             </Button>
           </Stack>
@@ -129,17 +101,12 @@ export const Tasks = () => {
               >
                 <Typography variant="h5">{task.name}</Typography>
                 <Box display="flex" justifyContent="space-between">
+                  <Typography variant="body1">Description: {task.description}</Typography>
                   <Typography variant="body1">
-                    Description: {task.description}
-                  </Typography>
-                  <Typography variant="body1">
-                    {`Start date: ${new Date(task.startDate).toLocaleDateString(
-                      'en-AU',
-                      {
-                        day: 'numeric',
-                        month: 'long',
-                      }
-                    )}`}
+                    {`Start date: ${new Date(task.startDate).toLocaleDateString('en-AU', {
+                      day: 'numeric',
+                      month: 'long',
+                    })}`}
                   </Typography>
                 </Box>
               </Card>

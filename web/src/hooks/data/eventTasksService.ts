@@ -23,7 +23,6 @@ export const useAddEventTask = () => {
 export const useGetEventTasks = () =>
   useQuery({
     queryKey: QUERY_KEYS.EVENT_TASKS,
-    queryFn: () =>
-      client.get<EventTaskDto[]>('Events').then((resp) => resp.data),
+    queryFn: () => client.get<EventTaskDto[]>('Events').then((resp) => resp.data),
     refetchOnWindowFocus: false,
   });

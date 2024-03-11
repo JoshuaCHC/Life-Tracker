@@ -1,10 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { client } from '../../client';
 import { QUERY_KEYS } from '../../constants/queryKeys';
-import {
-  CreateReferenceTaskDto,
-  ReferenceTaskDto,
-} from '../../models/dtos/taskDtos';
+import { CreateReferenceTaskDto, ReferenceTaskDto } from '../../models/dtos/taskDtos';
 
 export const useAddReferenceTask = () => {
   const queryClient = useQueryClient();
@@ -24,9 +21,6 @@ export const useAddReferenceTask = () => {
 export const useGetReferenceTasks = () =>
   useQuery({
     queryKey: QUERY_KEYS.REFERENCE_TASKS,
-    queryFn: () =>
-      client
-        .get<ReferenceTaskDto[]>('Events/ReferenceTask')
-        .then((resp) => resp.data),
+    queryFn: () => client.get<ReferenceTaskDto[]>('Events/ReferenceTask').then((resp) => resp.data),
     refetchOnWindowFocus: false,
   });

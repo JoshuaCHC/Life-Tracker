@@ -19,9 +19,7 @@ export const convertEventToCalendarEvent = (event: EventTaskDto) => {
   } as CalendarEvent;
 };
 
-export const convertScheduledTaskToCalendarEvent = (
-  scheduledTask: ScheduledTaskDto
-) => {
+export const convertScheduledTaskToCalendarEvent = (scheduledTask: ScheduledTaskDto) => {
   const completed = isTaskCompleted(scheduledTask.completedDate);
   return {
     id: scheduledTask.id.toString(),

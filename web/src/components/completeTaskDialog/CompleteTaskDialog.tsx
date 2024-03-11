@@ -1,17 +1,7 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Stack,
-} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { useCompleteScheduledTaskMutation } from '../../hooks/data/scheduledTasksService';
-import {
-  ScheduledTaskDto,
-  ViewScheduledTaskDto,
-} from '../../models/dtos/taskDtos';
+import { ScheduledTaskDto, ViewScheduledTaskDto } from '../../models/dtos/taskDtos';
 import { InputFactory } from '../InputFactory';
 import { convertScheduledTaskToViewScheduledTask } from '../../utils/scheduledTaskDtoMapper';
 
@@ -21,11 +11,7 @@ type CompleteTaskDialogProps = {
   selectedEvent: ScheduledTaskDto;
 };
 
-export const CompleteTaskDialog = ({
-  opened,
-  close,
-  selectedEvent,
-}: CompleteTaskDialogProps) => {
+export const CompleteTaskDialog = ({ opened, close, selectedEvent }: CompleteTaskDialogProps) => {
   const completeTask = useCompleteScheduledTaskMutation();
   const isComplete = new Date(selectedEvent?.completedDate).getTime() > 0;
 
@@ -83,18 +69,11 @@ export const CompleteTaskDialog = ({
         <Stack gap="12px" sx={{ pt: '8px' }}>
           {fields.map((value) => (
             <Controller
+              key={`controller-${value.name}`}
               name={value.name as keyof ViewScheduledTaskDto}
               control={control}
               render={({ field }) =>
-                (
-                  <InputFactory
-                    field={field}
-                    label={value.label}
-                    type={value.type}
-                    disabled={value.disabled}
-                    isReadOnly={value.readonly}
-                  />
-                ) ?? <> </>
+                <InputFactory field={field} label={value.label} type={value.type} disabled={value.disabled} isReadOnly={value.readonly} /> ?? <> </>
               }
             />
           ))}

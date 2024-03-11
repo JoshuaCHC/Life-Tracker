@@ -4,9 +4,7 @@ using EventsService.Dtos;
 using EventsService.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EventsService.Controllers { 
-
-
+namespace EventsService.Controllers;
 
 [Route("api/events/[controller]")]
 [ApiController]
@@ -65,5 +63,4 @@ public class ReferenceTaskController : ControllerBase
 
         return CreatedAtRoute(nameof(GetReferenceTaskById), new { referenceTaskReadDto.Id }, referenceTaskReadDto);
     }
-}
 }

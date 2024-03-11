@@ -1,21 +1,11 @@
 import { useForm, Controller } from 'react-hook-form';
-import {
-  Stack,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-} from '@mui/material';
+import { Stack, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useAddEventTask } from '../../hooks/data/eventTasksService';
 import { InputFactory } from '../InputFactory';
 import { dateFields, textFields } from './CreateEventDialogFields';
-import {
-  EventDateFields,
-  EventTaskCreateDto,
-} from '../../models/dtos/taskDtos';
+import { EventDateFields, EventTaskCreateDto } from '../../models/dtos/taskDtos';
 
 type CreateEventDialogProps = {
   opened: boolean;
@@ -23,24 +13,19 @@ type CreateEventDialogProps = {
   newEvent: EventDateFields | undefined;
 };
 
-export const CreateEventDialog = ({
-  opened,
-  close,
-  newEvent,
-}: CreateEventDialogProps) => {
+export const CreateEventDialog = ({ opened, close, newEvent }: CreateEventDialogProps) => {
   const createEvent = useAddEventTask();
 
-  const { control, handleSubmit, reset, watch, setValue } =
-    useForm<EventTaskCreateDto>({
-      values: {
-        allDay: newEvent?.allDay ?? false,
-        startDate: newEvent?.startDate,
-        endDate: newEvent?.endDate,
-        title: '',
-        location: '',
-        expectedCost: undefined,
-      },
-    });
+  const { control, handleSubmit, reset, watch, setValue } = useForm<EventTaskCreateDto>({
+    values: {
+      allDay: newEvent?.allDay ?? false,
+      startDate: newEvent?.startDate,
+      endDate: newEvent?.endDate,
+      title: '',
+      location: '',
+      expectedCost: undefined,
+    },
+  });
 
   const closeDialog = () => {
     reset();
@@ -68,15 +53,7 @@ export const CreateEventDialog = ({
             <Controller
               name={value.name as keyof EventTaskCreateDto}
               control={control}
-              render={({ field }) =>
-                (
-                  <InputFactory
-                    field={field}
-                    label={value.label}
-                    type={value.type}
-                  />
-                ) ?? <> </>
-              }
+              render={({ field }) => <InputFactory field={field} label={value.label} type={value.type} /> ?? <> </>}
             />
           ))}
           <Stack direction="row" gap="4px">
@@ -90,9 +67,7 @@ export const CreateEventDialog = ({
                       field={field}
                       label={value.label}
                       type={value.type}
-                      disabled={
-                        value.name === 'endDate' && watch('allDay').valueOf()
-                      }
+                      disabled={value.name === 'endDate' && watch('allDay').valueOf()}
                     />
                   ) ?? <> </>
                 }

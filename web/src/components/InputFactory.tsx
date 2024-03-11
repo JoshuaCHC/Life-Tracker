@@ -1,16 +1,5 @@
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from '@mui/material';
-import {
-  LocalizationProvider,
-  DesktopDateTimePicker,
-} from '@mui/x-date-pickers';
+import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { LocalizationProvider, DesktopDateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 type SelectData = {
@@ -27,14 +16,7 @@ type InputFactoryProps = {
   isReadOnly?: boolean;
 };
 
-export const InputFactory = ({
-  field,
-  label,
-  type,
-  data = [],
-  disabled = false,
-  isReadOnly = false,
-}: InputFactoryProps) => {
+export const InputFactory = ({ field, label, type, data = [], disabled = false, isReadOnly = false }: InputFactoryProps) => {
   switch (type) {
     case 'number':
       return (
@@ -83,12 +65,7 @@ export const InputFactory = ({
       return (
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">{label}</InputLabel>
-          <Select
-            {...field}
-            defaultValue={field.value}
-            disabled={disabled}
-            label={label}
-          >
+          <Select {...field} defaultValue={field.value} disabled={disabled} label={label}>
             {data.map((value) => (
               <MenuItem value={value.value}>{value.label}</MenuItem>
             ))}
@@ -96,12 +73,7 @@ export const InputFactory = ({
         </FormControl>
       );
     case 'checkbox':
-      return (
-        <FormControlLabel
-          control={<Checkbox {...field} defaultChecked={!!field.value} />}
-          label={label}
-        />
-      );
+      return <FormControlLabel control={<Checkbox {...field} defaultChecked={!!field.value} />} label={label} />;
 
     default:
       return null;

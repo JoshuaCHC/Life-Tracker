@@ -4,19 +4,12 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import { useMemo, useState } from 'react';
-import {
-  DateSelectArg,
-  EventClickArg,
-  EventContentArg,
-} from '@fullcalendar/core';
+import { DateSelectArg, EventClickArg, EventContentArg } from '@fullcalendar/core';
 import dayjs from 'dayjs';
 import { Box, Paper, useTheme } from '@mui/material';
 import { useGetScheduledTasksQuery } from '../../hooks/data/scheduledTasksService';
 import { useGetEventTasks } from '../../hooks/data/eventTasksService';
-import {
-  convertEventToCalendarEvent,
-  convertScheduledTaskToCalendarEvent,
-} from '../../utils/calendarEventMapper';
+import { convertEventToCalendarEvent, convertScheduledTaskToCalendarEvent } from '../../utils/calendarEventMapper';
 import { EventDateFields, ScheduledTaskDto } from '../../models/dtos/taskDtos';
 import { defaultScheduledTaskDto } from '../../models/dtos/emptyDtos';
 
@@ -25,31 +18,19 @@ import { CompleteTaskDialog } from '../../components/completeTaskDialog/Complete
 import { CreateEventDialog } from '../../components/createEventDialog/CreateEventDialog';
 
 export const Calendar = () => {
-  const {
-    open: createEventDialogOpen,
-    handleChange: setCreateEventDialogOpen,
-  } = useDialogControl();
-  const {
-    open: completeTaskDialogOpen,
-    handleChange: setCompleteTaskDialogOpen,
-  } = useDialogControl();
+  const { open: createEventDialogOpen, handleChange: setCreateEventDialogOpen } = useDialogControl();
+  const { open: completeTaskDialogOpen, handleChange: setCompleteTaskDialogOpen } = useDialogControl();
 
   const theme = useTheme();
-  const [selectedTask, setSelectedTask] = useState<ScheduledTaskDto>(
-    defaultScheduledTaskDto
-  );
+  const [selectedTask, setSelectedTask] = useState<ScheduledTaskDto>(defaultScheduledTaskDto);
   const [eventDateFields, setEventDateFields] = useState<EventDateFields>();
 
   const scheduledTasks = useGetScheduledTasksQuery();
   const events = useGetEventTasks();
 
   const calendarEvents = useMemo(() => {
-    const eventTasks = events.data?.map((event) =>
-      convertEventToCalendarEvent(event)
-    );
-    const scheduledEvents = scheduledTasks.data?.map((scheduledTask) =>
-      convertScheduledTaskToCalendarEvent(scheduledTask)
-    );
+    const eventTasks = events.data?.map((event) => convertEventToCalendarEvent(event));
+    const scheduledEvents = scheduledTasks.data?.map((scheduledTask) => convertScheduledTaskToCalendarEvent(scheduledTask));
     return eventTasks?.concat(scheduledEvents ?? []);
   }, [scheduledTasks.data, events.data]);
 
@@ -65,9 +46,7 @@ export const Calendar = () => {
   };
 
   const handleEventClick = (selected: EventClickArg) => {
-    const selectTask = scheduledTasks.data?.find(
-      (val) => val.id.toString() === selected.event.id
-    );
+    const selectTask = scheduledTasks.data?.find((val) => val.id.toString() === selected.event.id);
     if (!selectTask) return;
     setSelectedTask(selectTask);
     setCompleteTaskDialogOpen(true);
@@ -98,12 +77,7 @@ export const Calendar = () => {
       >
         <FullCalendar
           height="75vh"
-          plugins={[
-            dayGridPlugin,
-            timeGridPlugin,
-            interactionPlugin,
-            listPlugin,
-          ]}
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
           headerToolbar={{
             left: 'prev,next today',
             center: 'title',
@@ -120,16 +94,8 @@ export const Calendar = () => {
           events={calendarEvents}
         />
       </Paper>
-      <CompleteTaskDialog
-        opened={completeTaskDialogOpen}
-        close={() => setCompleteTaskDialogOpen(false)}
-        selectedEvent={selectedTask}
-      />
-      <CreateEventDialog
-        opened={createEventDialogOpen}
-        close={() => setCreateEventDialogOpen(false)}
-        newEvent={eventDateFields}
-      />
+      <CompleteTaskDialog opened={completeTaskDialogOpen} close={() => setCompleteTaskDialogOpen(false)} selectedEvent={selectedTask} />
+      <CreateEventDialog opened={createEventDialogOpen} close={() => setCreateEventDialogOpen(false)} newEvent={eventDateFields} />
     </Box>
   );
 };
