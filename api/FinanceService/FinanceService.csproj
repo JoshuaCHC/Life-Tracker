@@ -25,4 +25,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="E:\dev\microservices\shiny-barnacle\api\FinanceService\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="E:\dev\microservices\shiny-barnacle\api\FinanceService\.editorconfig" />
+  </ItemGroup>
+
 </Project>

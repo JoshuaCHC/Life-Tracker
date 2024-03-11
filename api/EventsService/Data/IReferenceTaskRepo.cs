@@ -1,17 +1,16 @@
 ﻿using EventsService.Models;
 
-namespace EventsService.Data
+namespace EventsService.Data;
+
+public interface IReferenceTaskRepo
 {
-    public interface IReferenceTaskRepo
-    {
-        IEnumerable<ReferenceTask> GetAllReferenceTasks();
+    IEnumerable<ReferenceTask> GetAllReferenceTasks();
 
-        ReferenceTask GetReferenceTaskById(int id);
+    ReferenceTask GetReferenceTaskById(int id);
 
-        void CreateReferenceTask(ReferenceTask referenceTask);
+    void CreateReferenceTask(ReferenceTask referenceTask);
 
-        void UpdateReferenceTask(ReferenceTask referenceTask);
+    void UpdateReferenceTask(ReferenceTask referenceTask);
 
-        void DeleteReferenceTask(int id);
-    }
+    void DeleteReferenceTask(int id);
 }

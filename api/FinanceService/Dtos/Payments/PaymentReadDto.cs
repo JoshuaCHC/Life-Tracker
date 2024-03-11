@@ -1,9 +1,8 @@
 ﻿using FinanceService.Dtos.Transactions;
 
-namespace FinanceService.Dtos.Payments
+namespace FinanceService.Dtos.Payments;
+
+public class PaymentReadDto : TransactionReadDto
 {
-    public class PaymentReadDto : TransactionReadDto
-    {
-        public string Merchant { get; set; }
-    }
+    public string Merchant { get; set; }
 }

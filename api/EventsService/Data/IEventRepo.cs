@@ -1,14 +1,13 @@
 ﻿using EventsService.Models;
 
-namespace EventsService.Data
+namespace EventsService.Data;
+
+public interface IEventRepo
 {
-    public interface IEventRepo
-    {
-        IEnumerable<Event> GetAllEvents();
+    IEnumerable<Event> GetAllEvents();
 
-        Event GetEventById(int id);
+    Event GetEventById(int id);
 
-        void CreateEvent(Event newEvent);
+    void CreateEvent(Event newEvent);
 
-    }
 }

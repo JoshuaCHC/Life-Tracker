@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useState } from 'react';
 
 export const useDialogControl = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
-  const handleChange = (open: boolean) => {
-    setOpen(open)
-  }
+  const handleChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+  };
 
-  return { open, handleChange }
-}
+  return { open, handleChange };
+};

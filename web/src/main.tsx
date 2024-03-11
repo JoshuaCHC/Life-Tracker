@@ -1,31 +1,31 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { Home } from './Home.tsx';
-import { Layout } from './Layout.tsx';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { Tasks } from './features/tasks/Tasks.tsx';
-import { Calendar } from './features/calendar/Calendar.tsx';
+import { Home } from './Home';
+import { Layout } from './Layout';
+import { Tasks } from './features/tasks/Tasks';
+import { Calendar } from './features/calendar/Calendar';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Layout />,
     children: [
       {
         index: true,
-        element: <Home/>,
+        element: <Home />,
       },
       {
-        path:"/tasks",
-        element: <Tasks/>
+        path: '/tasks',
+        element: <Tasks />,
       },
       {
-        path: "/calendar",
-        element: <Calendar/>
-      }
+        path: '/calendar',
+        element: <Calendar />,
+      },
     ],
-  }
+  },
 ]);
 
 const queryClient = new QueryClient();
@@ -33,7 +33,7 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router}/> 
+      <RouterProvider router={router} />
     </QueryClientProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

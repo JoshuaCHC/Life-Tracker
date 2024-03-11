@@ -1,9 +1,8 @@
 ﻿using FinanceService.Dtos.Transactions;
 
-namespace FinanceService.Dtos.Payments
+namespace FinanceService.Dtos.Payments;
+
+public class PaymentCreateDto : TransactionCreateDto
 {
-    public class PaymentCreateDto: TransactionCreateDto
-    {
-        public string Merchant { get; set; }
-    }
+    public string Merchant { get; set; }
 }
